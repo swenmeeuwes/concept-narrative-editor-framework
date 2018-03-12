@@ -2,6 +2,8 @@
   "name": "concept-narrative-editor-framework",
   "version": "0.1.0",
   "private": true,
+  "main": "src/electron-entry-point.js",
+  "homepage": "./",
   "dependencies": {
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
@@ -11,7 +13,9 @@
     "start": "react-scripts-ts start",
     "build": "react-scripts-ts build",
     "test": "react-scripts-ts test --env=jsdom",
-    "eject": "react-scripts-ts eject"
+    "eject": "react-scripts-ts eject",
+    "electron": "electron .",
+    "electron-dev": "set ELECTRON_ENTRY_URL=http://localhost:3000 && electron ."
   },
   "devDependencies": {
     "@types/jest": "^22.2.0",
