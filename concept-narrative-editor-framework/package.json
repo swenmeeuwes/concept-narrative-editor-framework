@@ -5,6 +5,7 @@
   "main": "src/electron-entry-point.js",
   "homepage": "./",
   "dependencies": {
+    "d3-node-editor": "^0.6.10",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-scripts-ts": "2.13.0"
