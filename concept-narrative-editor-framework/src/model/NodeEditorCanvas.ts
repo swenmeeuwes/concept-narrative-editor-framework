@@ -1,14 +1,18 @@
 import * as joint from 'jointjs';
 
 interface NodeEditorCanvasProperties {
+    parentContainter: HTMLElement;
     container: HTMLElement;
     model: joint.dia.Graph;
 }
 
 class NodeEditorCanvas {
     private _paper: joint.dia.Paper;
+    private _props: NodeEditorCanvasProperties;
 
     constructor(props: NodeEditorCanvasProperties) {
+        this._props = props;
+
         const defaultLink = new joint.dia.Link({
             connector: { name: 'rounded' }
         });
@@ -16,6 +20,8 @@ class NodeEditorCanvas {
         this._paper = new joint.dia.Paper({
             el: props.container,
             model: props.model,
+            width: props.container.offsetWidth,
+            height: props.container.offsetHeight,
             gridSize: 1,
             snapLinks: true,
             linkPinning: false,
@@ -44,7 +50,10 @@ class NodeEditorCanvas {
     }
 
     private onWindowResize() {
-        this.getPaper().setDimensions(window.innerWidth, window.innerHeight);
+        const container = document.getElementById(this._props.parentContainter.id);
+        if (container !== null) {
+            this.getPaper().setDimensions(container.offsetWidth, container.offsetHeight);
+        }
     }
 }
   

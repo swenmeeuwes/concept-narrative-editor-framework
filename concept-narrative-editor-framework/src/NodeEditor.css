@@ -1,4 +1,23 @@
 #nodeEditorCanvas {
-    width: 100%;
+    overflow: hidden;
     height: 100%;
+    width: 100%;
+
+    background-color: rgb(235, 235, 235);
+    background-image: url('./assets/grid_cell.png');
+    background-repeat: repeat;
+}
+
+#nodeEditor {
+    float: left;
+    height: 100vh;
+    width: calc(100% - 200px);
+}
+
+#inspector {
+    min-width: 200px;
+    height: 100vh;
+    float: left;
+
+    background-color: rgb(70, 70, 70);
 }
