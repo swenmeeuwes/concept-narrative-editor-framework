@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Form, { IChangeEvent } from 'react-jsonschema-form';
 import ContentTypeFactory from './ContentTypeFactory';
-import ContentTypeModel from './model/ContentTypeNode';
+import ContentTypeNode from './model/ContentTypeNode';
 import SchemaHelper from './SchemaHelper';
 
 import './ContentInspector.css';
@@ -29,33 +29,17 @@ class ContentInspector extends React.Component<Props, State> {
         };
     }
 
-    // componentWillMount() {
-    //     console.log('inspector will mount', this.state.selectedNode);
-
-    //     if (this.state.selectedNode == null)
-    //         return;
-
-    //     const contentTypeModel = this.state.selectedNode.model as ContentTypeModel;
-
-    //     ContentTypeFactory.Instance().readSchema(true)
-    //         .then((jsonSchema: any) => {
-    //             this.setState({
-    //                 currentSchema: jsonSchema.definitions.contentTypes[contentTypeModel.Type]
-    //             });
-    //         });
-    // }
-
     componentWillReceiveProps(nextProps: Props) {
         if (nextProps.selectedNode == null)
             return;
 
         const selectedNode = nextProps.selectedNode as joint.dia.CellView;
-        const contentTypeModel = selectedNode.model as ContentTypeModel;
+        const contentTypeNode = selectedNode.model as ContentTypeNode;
 
         ContentTypeFactory.Instance().readSchema(true)
             .then((jsonSchema: any) => {
                 if (!jsonSchema.definitions.contentTypes.hasOwnProperty(
-                    SchemaHelper.TrimPath(contentTypeModel.ContentModel.SchemaId)
+                    SchemaHelper.TrimRefPath(contentTypeNode.ContentModel.SchemaId)
                 )) {
                     this.setState({
                         currentSchema: {},
@@ -64,12 +48,15 @@ class ContentInspector extends React.Component<Props, State> {
                     return;
                 }
 
-                this.setState({
-                    currentSchema: jsonSchema[SchemaHelper.ResolveSchemaId(contentTypeModel.ContentModel.SchemaId)],
-                    title: contentTypeModel.ContentModel.SchemaId,
-                    formData: {
-                        text: ''
-                    }
+                SchemaHelper.ResolveSchemaReference(jsonSchema, contentTypeNode.ContentModel.SchemaId).then((resolvedSchema) => {
+                    console.log(resolvedSchema);
+                    this.setState({
+                        currentSchema: resolvedSchema,
+                        title: contentTypeNode.ContentModel.SchemaId,
+                        formData: {
+                            text: ''
+                        }
+                    });
                 });
             });
     }
