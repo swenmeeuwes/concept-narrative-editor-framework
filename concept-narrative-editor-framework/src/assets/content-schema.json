@@ -1,0 +1,55 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "http://www.ranjnet.nl/ozcontent#",
+    "title": "&ranj game content",
+    "description": "This schema defines the content types within the game content",
+    "definitions": {
+        "propertyTypes": {
+            "stringProperty": {
+                "$id": "#/definitions/propertyTypes/stringProperty",
+                "type": "string"
+            },
+            "resourceProperty": {
+                "$id": "#/definitions/propertyTypes/resourceProperty",
+                "type": "string",
+                "format": "data-url"
+            },
+            "variableMutation": {
+                "$id": "#/definitions/propertyTypes/variableMutation",
+                "properties": {
+                    "variableKey": {
+                        "type": "string"
+                    },
+                    "mutationType": {
+                        "type": "string",
+                        "enum": ["Set", "Add", "Subtract", "Multiple", "Divide"]
+                    },
+                    "mutationValue": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "contentTypes": {
+            "textContent": {
+                "$id": "#/definitions/contentTypes/textContent",
+                "type": "object",
+                "properties": {
+                    "text": {
+                        "$ref": "#/definitions/propertyTypes/stringProperty"
+                    }
+                }
+            },
+            "variableMutationContent": {
+                "$id": "#/definitions/contentTypes/variableMutationContent",
+                "type": "object",
+                "properties": {
+                    "mutations": {
+                        "type": "array",
+                        "$ref": "#/definitions/propertyTypes/variableMutation"
+                    }
+                }
+            }
+        }
+    }
+}
