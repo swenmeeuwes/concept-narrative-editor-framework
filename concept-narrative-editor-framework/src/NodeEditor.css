@@ -4,8 +4,8 @@
     width: 100%;
 
     background-color: rgb(235, 235, 235);
-    background-image: url('./assets/grid_cell.png');
-    background-repeat: repeat;
+    /* background-image: url('./assets/grid_cell.png');
+    background-repeat: repeat; */
 }
 
 #nodeEditor {

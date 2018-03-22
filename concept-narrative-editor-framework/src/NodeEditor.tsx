@@ -50,7 +50,7 @@ class NodeEditor extends React.Component<Props, State> {
 
       const model = new ContentTypeNode({
         position: { x: 100 + 150 * i, y: 50 + 100 * i },
-        size: { width: 100, height: 100 }
+        size: { width: 96, height: 96 }
       }, id);
 
       this._graph.addCell(model);
