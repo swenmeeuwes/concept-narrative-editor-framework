@@ -2,11 +2,10 @@ import * as React from 'react';
 import * as joint from 'jointjs';
 import ContentTypeModel from './model/ContentTypeModel';
 import NodeEditorCanvas from './model/NodeEditorCanvas';
+import ContentInspector from './ContentInspector';
 
-import '../node_modules/react-grid-layout/css/styles.css';
 import '../node_modules/jointjs/dist/joint.min.css';
 import './NodeEditor.css';
-import ContentInspector from './ContentInspector';
 
 interface Props { }
 interface State {

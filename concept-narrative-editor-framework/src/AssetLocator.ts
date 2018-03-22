@@ -1,6 +1,14 @@
-const electron = (window as any).require('electron');
-const path = electron.remote.require('path');
-const app = electron.remote.app;
+import isElectron from 'is-electron';
+
+var electron, path, app;
+
+if (isElectron()) {
+    const windowObject = window as any;
+
+    electron = windowObject.require('electron');
+    path = electron.remote.require('path');
+    app = electron.remote.app;
+}
 
 class AssetLocator {
     // todo: FIX THIS PATH FOR PRODUCTION!

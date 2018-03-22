@@ -3,10 +3,14 @@ import * as RefParser from 'json-schema-ref-parser';
 
 import AssetLocator from './AssetLocator';
 
-const electron = (window as any).require('electron');
-const fs = electron.remote.require('fs');
-// const path = electron.remote.require('path');
-// const app = electron.remote.app;
+import isElectron from 'is-electron';
+
+var electron, fs;
+
+if (isElectron()) {
+    electron = (window as any).require('electron');
+    fs = electron.remote.require('fs');
+}
 
 class ContentTypeFactory {
     private static _instance: ContentTypeFactory;
@@ -17,23 +21,6 @@ class ContentTypeFactory {
     public static Instance(): ContentTypeFactory {
         return this._instance || (this._instance = new this());
     }
-
-    // TEST, obsolete
-    // public readDir() {
-    //     const appPath = app.getAppPath();
-    //     fs.readdir(appPath, (err, results) => {
-    //         const files = results.filter((fileName) => {
-    //             try {
-    //                 let isDirectory = fs.statSync(path.join(appPath, fileName)).isDirectory();
-    //                 return !isDirectory;
-    //             } catch (e) {
-    //                 console.warn(e);
-    //                 return false;
-    //             }
-    //         });
-    //         console.log(files);
-    //     });
-    // }
 
     public initialize() {
         this.readSchema()

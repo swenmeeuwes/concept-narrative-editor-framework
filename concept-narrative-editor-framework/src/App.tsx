@@ -1,16 +1,20 @@
 import * as React from 'react';
 
-import ContentTypeFactory from './ContentTypeFactory';
+import isElectron from 'is-electron';
 import NodeEditor from './NodeEditor';
 
-import 'react-bootstrap';
 import './App.css';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
 class App extends React.Component {
   render() {
-    // const contentTypeFactory = new ContentTypeFactory();
-    ContentTypeFactory.Instance().initialize();
+    if (!isElectron()) {
+      return (
+        <div id="notSupported">
+          <h1>This app has no browser support.</h1>
+        </div>
+      );
+    }
 
     return (
       <NodeEditor />
