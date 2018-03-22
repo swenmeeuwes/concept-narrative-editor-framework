@@ -60,11 +60,29 @@ class ContentInspector extends React.Component<Props, State> {
             });
     }
 
-    onValueChanged = (changeEvent: IChangeEvent) => {
+    onValueChanged = (event: IChangeEvent) => {
         if (this.state.selectedNode !== null) {
             const contentTypeNode = this.state.selectedNode.model as ContentTypeNode;
-            contentTypeNode.ContentModel.Data = changeEvent.formData;
+            contentTypeNode.ContentModel.Data = event.formData;
         }
+    }
+
+    onSubmit = (formData: FormData) => {
+        // Might be overkill, since it is already set in onValueChanged ...
+        if (this.state.selectedNode !== null) {
+            const contentTypeNode = this.state.selectedNode.model as ContentTypeNode;            
+            contentTypeNode.ContentModel.Data = formData;
+        }
+
+        if (this.state.selectedNode !== null)
+            this.state.selectedNode.unhighlight();
+
+        this.setState({
+            selectedNode: null,
+            currentSchema: {},
+            title: '',
+            formData: {}
+        });
     }
 
     render() {
@@ -75,7 +93,7 @@ class ContentInspector extends React.Component<Props, State> {
                     schema={this.state.currentSchema}
                     formData={this.state.formData}
                     onChange={this.onValueChanged}
-                // onSubmit={this.log('submitted')}
+                    onSubmit={this.onSubmit}
                 // onError={this.log('errors')}
                 />
             </div>
