@@ -11,6 +11,10 @@ class ContentModel {
         return this._data;
     }
 
+    public set Data(newData: Object) {
+        this._data = newData;
+    }
+
     public get SchemaId() {
         return this._schemaId;
     }

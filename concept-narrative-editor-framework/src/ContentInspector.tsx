@@ -30,17 +30,18 @@ class ContentInspector extends React.Component<Props, State> {
     }
 
     componentWillReceiveProps(nextProps: Props) {
-        if (nextProps.selectedNode == null)
+        if (nextProps.selectedNode === null)
             return;
 
-        const selectedNode = nextProps.selectedNode as joint.dia.CellView;
+        const selectedNode = nextProps.selectedNode;
         const contentTypeNode = selectedNode.model as ContentTypeNode;
 
         ContentTypeFactory.Instance().readSchema(true)
             .then((jsonSchema: any) => {
-                if (!jsonSchema.definitions.contentTypes.hasOwnProperty(
-                    SchemaHelper.TrimRefPath(contentTypeNode.ContentModel.SchemaId)
-                )) {
+                const contentModel = contentTypeNode.ContentModel;
+
+                const contentTypeExists = jsonSchema.definitions.contentTypes.hasOwnProperty(SchemaHelper.TrimRefPath(contentModel.SchemaId));
+                if (!contentTypeExists) {
                     this.setState({
                         currentSchema: {},
                         title: ''
@@ -48,21 +49,22 @@ class ContentInspector extends React.Component<Props, State> {
                     return;
                 }
 
-                SchemaHelper.ResolveSchemaReference(jsonSchema, contentTypeNode.ContentModel.SchemaId).then((resolvedSchema) => {
-                    console.log(resolvedSchema);
+                SchemaHelper.ResolveSchemaReference(jsonSchema, contentModel.SchemaId).then((resolvedSchema) => {
                     this.setState({
+                        selectedNode: selectedNode,
                         currentSchema: resolvedSchema,
-                        title: contentTypeNode.ContentModel.SchemaId,
-                        formData: {
-                            text: ''
-                        }
+                        title: SchemaHelper.TrimRefPath(contentModel.SchemaId),
+                        formData: contentModel.Data
                     });
                 });
             });
     }
 
-    onValueChanged(formData: IChangeEvent) {
-        console.log(formData.formData);
+    onValueChanged = (changeEvent: IChangeEvent) => {
+        if (this.state.selectedNode !== null) {
+            const contentTypeNode = this.state.selectedNode.model as ContentTypeNode;
+            contentTypeNode.ContentModel.Data = changeEvent.formData;
+        }
     }
 
     render() {
@@ -71,7 +73,7 @@ class ContentInspector extends React.Component<Props, State> {
                 <h4>{this.state.title}</h4>
                 <Form
                     schema={this.state.currentSchema}
-                    // formData={this.state.formData}
+                    formData={this.state.formData}
                     onChange={this.onValueChanged}
                 // onSubmit={this.log('submitted')}
                 // onError={this.log('errors')}
