@@ -16,16 +16,17 @@
             },
             "variableMutation": {
                 "$id": "#/definitions/propertyTypes/variableMutation",
+                "type": "object",
                 "properties": {
                     "variableKey": {
-                        "type": "string"
+                        "$ref": "#/definitions/propertyTypes/stringProperty"
                     },
                     "mutationType": {
-                        "type": "string",
+                        "$ref": "#/definitions/propertyTypes/stringProperty",
                         "enum": ["Set", "Add", "Subtract", "Multiple", "Divide"]
                     },
                     "mutationValue": {
-                        "type": "string"
+                        "$ref": "#/definitions/propertyTypes/stringProperty"
                     }
                 }
             }
@@ -46,7 +47,7 @@
                 "properties": {
                     "mutations": {
                         "type": "array",
-                        "$ref": "#/definitions/propertyTypes/variableMutation"
+                        "items": { "$ref": "#/definitions/propertyTypes/variableMutation" }
                     }
                 }
             }
