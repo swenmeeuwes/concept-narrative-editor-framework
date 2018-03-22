@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Form, { IChangeEvent } from 'react-jsonschema-form';
 import ContentTypeFactory from './ContentTypeFactory';
-import ContentTypeModel from './model/ContentTypeModel';
+import ContentTypeModel from './model/ContentTypeNode';
 import SchemaHelper from './SchemaHelper';
 
 import './ContentInspector.css';

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as joint from 'jointjs';
-import ContentTypeModel from './model/ContentTypeModel';
+import ContentTypeNode from './model/ContentTypeNode';
 import NodeEditorCanvas from './model/NodeEditorCanvas';
 import ContentInspector from './ContentInspector';
 
@@ -41,7 +41,7 @@ class NodeEditor extends React.Component<Props, State> {
     });
 
     for (var i = 0; i < 3; i++) {
-      const model = new ContentTypeModel({
+      const model = new ContentTypeNode({
         position: { x: 100 + 150 * i, y: 50 + 100 * i },
         size: { width: 100, height: 100 }
       }, '#/definitions/contentTypes/textContent');
