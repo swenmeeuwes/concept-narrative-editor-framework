@@ -12,6 +12,7 @@ class ContentModel {
     }
 
     public set Data(newData: Object) {
+        // todo: validate newData against json schema
         this._data = newData;
     }
 
