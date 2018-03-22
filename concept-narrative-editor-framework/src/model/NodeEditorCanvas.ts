@@ -39,7 +39,7 @@ class NodeEditorCanvas {
         this.addEventListeners();
     }
 
-    public getPaper() {
+    public get Paper() {
         return this._paper;
     }
 
@@ -61,7 +61,7 @@ class NodeEditorCanvas {
     private onWindowResize() {
         const container = document.getElementById(this._props.parentContainer.id);
         if (container !== null) {
-            this.getPaper().setDimensions(container.offsetWidth, container.offsetHeight);
+            this.Paper.setDimensions(container.offsetWidth, container.offsetHeight);
         }
     }
 }

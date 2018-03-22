@@ -58,6 +58,12 @@ class NodeEditor extends React.Component<Props, State> {
   }
 
   onNodeSelected(cellView: joint.dia.CellView) {
+    // Unhighlight previous node
+    if (this.state.selectedNode !== null)
+      this.state.selectedNode.unhighlight();
+
+    cellView.highlight();
+
     this.setState({
       selectedNode: cellView
     });
