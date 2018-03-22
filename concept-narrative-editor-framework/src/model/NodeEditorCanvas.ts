@@ -1,9 +1,13 @@
 import * as joint from 'jointjs';
 
+// Functions definitions
+type OnNodeSelected = (cellView: joint.dia.CellView) => void;
+
 interface NodeEditorCanvasProperties {
-    parentContainter: HTMLElement;
+    parentContainer: HTMLElement;
     container: HTMLElement;
     model: joint.dia.Graph;
+    onNodeSelected: OnNodeSelected;
 }
 
 class NodeEditorCanvas {
@@ -35,26 +39,32 @@ class NodeEditorCanvas {
         this.addEventListeners();
     }
 
-    getPaper() {
+    public getPaper() {
         return this._paper;
+    }
+
+    public onNodeSelected(cellView: joint.dia.CellView) {
+        console.log('Node selected', cellView);
+        this._props.onNodeSelected(cellView);
     }
 
     private addEventListeners() {
         window.addEventListener('resize', this.onWindowResize.bind(this));
+        this._paper.on('cell:pointerclick', this.onNodeSelected.bind(this));
     }
 
-    private validateConnection(sourceView: joint.dia.CellView, sourceMagnet: SVGElement, 
-                                targetView: joint.dia.CellView, targetMagnet: SVGElement) {
+    private validateConnection(sourceView: joint.dia.CellView, sourceMagnet: SVGElement,
+        targetView: joint.dia.CellView, targetMagnet: SVGElement) {
         return sourceView !== targetView && sourceMagnet !== targetMagnet
-                && sourceMagnet.getAttribute('port') !== targetMagnet.getAttribute('port');
+            && sourceMagnet.getAttribute('port') !== targetMagnet.getAttribute('port');
     }
 
     private onWindowResize() {
-        const container = document.getElementById(this._props.parentContainter.id);
+        const container = document.getElementById(this._props.parentContainer.id);
         if (container !== null) {
             this.getPaper().setDimensions(container.offsetWidth, container.offsetHeight);
         }
     }
 }
-  
+
 export default NodeEditorCanvas;

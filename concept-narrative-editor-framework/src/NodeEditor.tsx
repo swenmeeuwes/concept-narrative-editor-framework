@@ -6,13 +6,23 @@ import NodeEditorCanvas from './model/NodeEditorCanvas';
 import '../node_modules/react-grid-layout/css/styles.css';
 import '../node_modules/jointjs/dist/joint.min.css';
 import './NodeEditor.css';
+import ContentInspector from './ContentInspector';
 
-class NodeEditor extends React.Component {
+interface Props { }
+interface State {
+  selectedNode: joint.dia.CellView | null;
+}
+
+class NodeEditor extends React.Component<Props, State> {
   private _graph: joint.dia.Graph;
   private _canvas: NodeEditorCanvas;
 
-  constructor(props: React.ReactPropTypes) {
+  constructor(props: Props) {
     super(props);
+
+    this.state = {
+      selectedNode: null
+    };
 
     this._graph = new joint.dia.Graph();
   }
@@ -25,25 +35,35 @@ class NodeEditor extends React.Component {
     const parentContainer = document.getElementById('nodeEditor') as HTMLElement;
     const container = document.getElementById('nodeEditorCanvas') as HTMLElement;
     this._canvas = new NodeEditorCanvas({
-      parentContainter: parentContainer,
+      parentContainer: parentContainer,
       container: container,
-      model: this._graph
+      model: this._graph,
+      onNodeSelected: this.onNodeSelected.bind(this)
     });
 
     for (var i = 0; i < 3; i++) {
-      this._graph.addCell(new ContentTypeModel({
+      const model = new ContentTypeModel({
         position: { x: 100 + 150 * i, y: 50 + 100 * i },
         size: { width: 100, height: 100 }
-      }));
+      }, '#/definitions/contentTypes/textContent');
+
+      this._graph.addCell(model);
     }
   }
 
+  onNodeSelected(cellView: joint.dia.CellView) {
+    this.setState({
+      selectedNode: cellView
+    });
+  }
+
   render() {
+    const contentInspector = <ContentInspector selectedNode={this.state.selectedNode} />;
+
     return (
       <div>
         <div id="inspector">
-          placeholder
-          <div/>
+          {contentInspector}
         </div>
         <div id="nodeEditor">
           <div id="nodeEditorCanvas" />

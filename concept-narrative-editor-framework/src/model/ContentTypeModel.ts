@@ -1,11 +1,26 @@
 import * as joint from 'jointjs';
+import ContentModel from './ContentModel';
 
+// Is more like a mediator between the joint view and content model
 class ContentTypeModel extends joint.shapes.devs.Model {
-    constructor(attributes: joint.shapes.devs.ModelAttributes) {
+    private _contentModel: ContentModel;
+
+    constructor(attributes: joint.shapes.devs.ModelAttributes, schemaId: string) {
       super(attributes);
+
+      this.ContentModel = new ContentModel(schemaId);
 
       this.addInPort('In');
       this.addOutPort('Out');
+    }
+
+    public get ContentModel() {
+      return this._contentModel;
+    }
+
+    public set ContentModel(newContentModel: ContentModel) {
+      this._contentModel = newContentModel;
+      // this.attr('.label', { text: newType, 'ref-x': .5, 'ref-y': .2 });
     }
 }
   

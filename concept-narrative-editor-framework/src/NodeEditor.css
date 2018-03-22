@@ -11,13 +11,14 @@
 #nodeEditor {
     float: left;
     height: 100vh;
-    width: calc(100% - 200px);
+    width: calc(100% - 300px);
 }
 
 #inspector {
-    min-width: 200px;
+    width: 300px;
     height: 100vh;
     float: left;
 
-    background-color: rgb(70, 70, 70);
+    background-color: rgb(197, 197, 197);
+    border-right-color: black;
 }
