@@ -44,7 +44,6 @@ class NodeEditorCanvas {
     }
 
     public onNodeSelected(cellView: joint.dia.CellView) {
-        console.log('Node selected', cellView);
         this._props.onNodeSelected(cellView);
     }
 
