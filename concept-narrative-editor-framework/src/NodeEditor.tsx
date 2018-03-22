@@ -45,6 +45,8 @@ class NodeEditor extends React.Component<Props, State> {
       let id = '#/definitions/contentTypes/textContent';
       if (i === 1)
         id = '#/definitions/contentTypes/variableMutationContent';
+      if (i === 2)
+        id = '#/definitions/contentTypes/imageContent';
 
       const model = new ContentTypeNode({
         position: { x: 100 + 150 * i, y: 50 + 100 * i },

@@ -14,8 +14,8 @@
                 "type": "string",
                 "format": "data-url"
             },
-            "variableMutation": {
-                "$id": "#/definitions/propertyTypes/variableMutation",
+            "variableMutationProperty": {
+                "$id": "#/definitions/propertyTypes/variableMutationProperty",
                 "type": "object",
                 "properties": {
                     "variableKey": {
@@ -23,7 +23,13 @@
                     },
                     "mutationType": {
                         "$ref": "#/definitions/propertyTypes/stringProperty",
-                        "enum": ["Set", "Add", "Subtract", "Multiple", "Divide"],
+                        "enum": [
+                            "Set",
+                            "Add",
+                            "Subtract",
+                            "Multiple",
+                            "Divide"
+                        ],
                         "default": "Set"
                     },
                     "mutationValue": {
@@ -42,13 +48,24 @@
                     }
                 }
             },
+            "imageContent": {
+                "$id": "#/definitions/contentTypes/imageContent",
+                "type": "object",
+                "properties": {
+                    "imageResource": {
+                        "$ref": "#/definitions/propertyTypes/resourceProperty"
+                    }
+                }
+            },
             "variableMutationContent": {
                 "$id": "#/definitions/contentTypes/variableMutationContent",
                 "type": "object",
                 "properties": {
                     "mutations": {
                         "type": "array",
-                        "items": { "$ref": "#/definitions/propertyTypes/variableMutation" }
+                        "items": {
+                            "$ref": "#/definitions/propertyTypes/variableMutationProperty"
+                        }
                     }
                 }
             }
