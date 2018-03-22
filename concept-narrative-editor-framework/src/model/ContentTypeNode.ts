@@ -22,7 +22,7 @@ class ContentTypeNode extends joint.shapes.devs.Model {
     public set ContentModel(newContentModel: ContentModel) {
       this._contentModel = newContentModel;
       this.attr('.label', { 
-        text: SchemaHelper.TrimPath(newContentModel.SchemaId), 
+        text: SchemaHelper.TrimRefPath(newContentModel.SchemaId), 
         'ref-x': .5, 
         'ref-y': .2 
       });
