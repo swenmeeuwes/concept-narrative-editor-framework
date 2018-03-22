@@ -40,11 +40,16 @@ class NodeEditor extends React.Component<Props, State> {
       onNodeSelected: this.onNodeSelected.bind(this)
     });
 
-    for (var i = 0; i < 3; i++) {
+    // Just for testing
+    for (var i = 0; i < 3; i++) {      
+      let id = '#/definitions/contentTypes/textContent';
+      if (i === 1)
+        id = '#/definitions/contentTypes/variableMutationContent';
+
       const model = new ContentTypeNode({
         position: { x: 100 + 150 * i, y: 50 + 100 * i },
         size: { width: 100, height: 100 }
-      }, '#/definitions/contentTypes/textContent');
+      }, id);
 
       this._graph.addCell(model);
     }
