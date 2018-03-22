@@ -23,7 +23,8 @@
                     },
                     "mutationType": {
                         "$ref": "#/definitions/propertyTypes/stringProperty",
-                        "enum": ["Set", "Add", "Subtract", "Multiple", "Divide"]
+                        "enum": ["Set", "Add", "Subtract", "Multiple", "Divide"],
+                        "default": "Set"
                     },
                     "mutationValue": {
                         "$ref": "#/definitions/propertyTypes/stringProperty"
