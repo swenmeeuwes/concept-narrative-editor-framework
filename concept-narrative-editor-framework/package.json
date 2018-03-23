@@ -7,6 +7,8 @@
   "dependencies": {
     "ajv": "^6.3.0",
     "bootstrap": "^4.0.0",
+    "bootswatch": "^4.0.0",
+    "font-awesome": "^4.7.0",
     "is-electron": "^2.1.0",
     "jointjs": "^2.0.1",
     "json-schema-ref-parser": "^5.0.0",
