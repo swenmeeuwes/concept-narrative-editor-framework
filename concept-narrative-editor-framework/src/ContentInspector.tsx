@@ -97,7 +97,9 @@ class ContentInspector extends React.Component<Props, State> {
                     onChange={this.onValueChanged}
                     onSubmit={this.onSubmit}
                 // onError={this.log('errors')}
-                />
+                >
+                    <div/> {/* Removes default rendered 'submit' button */}
+                </Form>
             </div>
         );
     }
