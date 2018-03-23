@@ -1,4 +1,5 @@
 import * as joint from 'jointjs';
+import ContentTypeNode from 'src/model/ContentTypeNode';
 
 // Functions definitions
 type OnNodeSelected = (cellView: joint.dia.CellView | null) => void;
@@ -57,12 +58,15 @@ class NodeEditorCanvas {
         }
     }
 
-    private onNodeSelected = (cellView: joint.dia.CellView | null) => {
-        this._props.onNodeSelected(cellView);
+    private onNodeSelected = (cellView: joint.dia.CellView) => {
+        if (cellView.model instanceof ContentTypeNode)
+            this._props.onNodeSelected(cellView);
+        else
+            this._props.onNodeSelected(null);
     }
-    
+
     private onBlankPointerDown = (evt: EventTarget, x: number, y: number) => {
-        this.onNodeSelected(null);
+        this._props.onNodeSelected(null);
     }
 
     private validateConnection(sourceView: joint.dia.CellView, sourceMagnet: SVGElement,

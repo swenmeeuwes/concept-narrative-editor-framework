@@ -41,6 +41,8 @@ class ContentInspector extends React.Component<Props, State> {
         ContentTypeFactory.Instance().readSchema(true)
             .then((jsonSchema: any) => {
                 const contentModel = contentTypeNode.ContentModel;
+                if (contentModel === undefined)
+                    return;
 
                 const contentTypeExists = jsonSchema.definitions.contentTypes.hasOwnProperty(SchemaHelper.TrimRefPath(contentModel.SchemaId));
                 if (!contentTypeExists) {
