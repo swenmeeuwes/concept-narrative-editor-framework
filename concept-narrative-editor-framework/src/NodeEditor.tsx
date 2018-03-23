@@ -62,7 +62,8 @@ class NodeEditor extends React.Component<Props, State> {
     if (this.state.selectedNode !== null)
       this.state.selectedNode.unhighlight();
 
-    cellView.highlight();
+    if (cellView !== null)  
+      cellView.highlight();
 
     this.setState({
       selectedNode: cellView

@@ -30,8 +30,10 @@ class ContentInspector extends React.Component<Props, State> {
     }
 
     componentWillReceiveProps(nextProps: Props) {
-        if (nextProps.selectedNode === null)
+        if (nextProps.selectedNode === null) {
+            this.clear();
             return;
+        }
 
         const selectedNode = nextProps.selectedNode;
         const contentTypeNode = selectedNode.model as ContentTypeNode;
@@ -70,19 +72,14 @@ class ContentInspector extends React.Component<Props, State> {
     onSubmit = (formData: FormData) => {
         // Might be overkill, since it is already set in onValueChanged ...
         if (this.state.selectedNode !== null) {
-            const contentTypeNode = this.state.selectedNode.model as ContentTypeNode;            
+            const contentTypeNode = this.state.selectedNode.model as ContentTypeNode;
             contentTypeNode.ContentModel.Data = formData;
         }
 
         if (this.state.selectedNode !== null)
             this.state.selectedNode.unhighlight();
 
-        this.setState({
-            selectedNode: null,
-            currentSchema: {},
-            title: '',
-            formData: {}
-        });
+        this.clear();
     }
 
     render() {
@@ -98,6 +95,15 @@ class ContentInspector extends React.Component<Props, State> {
                 />
             </div>
         );
+    }
+
+    private clear() {
+        this.setState({
+            selectedNode: null,
+            currentSchema: {},
+            title: '',
+            formData: {}
+        });
     }
 }
 

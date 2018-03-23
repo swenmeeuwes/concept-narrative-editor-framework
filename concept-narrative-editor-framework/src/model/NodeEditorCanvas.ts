@@ -1,7 +1,7 @@
 import * as joint from 'jointjs';
 
 // Functions definitions
-type OnNodeSelected = (cellView: joint.dia.CellView) => void;
+type OnNodeSelected = (cellView: joint.dia.CellView | null) => void;
 
 interface NodeEditorCanvasProperties {
     parentContainer: HTMLElement;
@@ -44,26 +44,31 @@ class NodeEditorCanvas {
         return this._paper;
     }
 
-    public onNodeSelected(cellView: joint.dia.CellView) {
-        this._props.onNodeSelected(cellView);
+    private addEventListeners() {
+        window.addEventListener('resize', this.onWindowResize);
+        this._paper.on('cell:pointerclick', this.onNodeSelected);
+        this._paper.on('blank:pointerdown', this.onBlankPointerDown);
     }
 
-    private addEventListeners() {
-        window.addEventListener('resize', this.onWindowResize.bind(this));
-        this._paper.on('cell:pointerclick', this.onNodeSelected.bind(this));
+    private onWindowResize = () => {
+        const container = document.getElementById(this._props.parentContainer.id);
+        if (container !== null) {
+            this.Paper.setDimensions(container.offsetWidth, container.offsetHeight);
+        }
+    }
+
+    private onNodeSelected = (cellView: joint.dia.CellView | null) => {
+        this._props.onNodeSelected(cellView);
+    }
+    
+    private onBlankPointerDown = (evt: EventTarget, x: number, y: number) => {
+        this.onNodeSelected(null);
     }
 
     private validateConnection(sourceView: joint.dia.CellView, sourceMagnet: SVGElement,
         targetView: joint.dia.CellView, targetMagnet: SVGElement) {
         return sourceView !== targetView && sourceMagnet !== targetMagnet
             && sourceMagnet.getAttribute('port') !== targetMagnet.getAttribute('port');
-    }
-
-    private onWindowResize() {
-        const container = document.getElementById(this._props.parentContainer.id);
-        if (container !== null) {
-            this.Paper.setDimensions(container.offsetWidth, container.offsetHeight);
-        }
     }
 }
 
