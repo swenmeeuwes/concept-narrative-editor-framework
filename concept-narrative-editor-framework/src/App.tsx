@@ -4,7 +4,7 @@ import isElectron from 'is-electron';
 import NodeEditor from './NodeEditor';
 
 import './App.css';
-import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+import './superhero.min.css';
 
 class App extends React.Component {
   render() {
