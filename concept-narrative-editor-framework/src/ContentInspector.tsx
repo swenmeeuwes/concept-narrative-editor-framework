@@ -85,6 +85,9 @@ class ContentInspector extends React.Component<Props, State> {
     }
 
     render() {
+        if (this.state.selectedNode === null)
+            return (<div/>);
+
         return (
             <div id="inspectorEditWindow">
                 <h4>{this.state.title}</h4>
