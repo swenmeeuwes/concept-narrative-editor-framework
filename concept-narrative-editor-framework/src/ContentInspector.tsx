@@ -1,8 +1,9 @@
 import * as React from 'react';
 import Form, { IChangeEvent } from 'react-jsonschema-form';
-import ContentTypeFactory from './ContentTypeFactory';
 import ContentTypeNode from './model/ContentTypeNode';
+import ContentSchemaWrapper from './schema/ContentSchemaWrapper';
 import SchemaHelper from './SchemaHelper';
+import AssetLoader from './assetloading/AssetLoader';
 
 import './ContentInspector.css';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
@@ -18,8 +19,12 @@ interface State {
 }
 
 class ContentInspector extends React.Component<Props, State> {
+    private _contentSchemaWrapper: ContentSchemaWrapper;
+
     constructor(props: Props) {
         super(props);
+
+        this._contentSchemaWrapper = AssetLoader.Instance.Library.contentSchemaWrapper;
 
         this.state = {
             currentSchema: {},
@@ -38,30 +43,27 @@ class ContentInspector extends React.Component<Props, State> {
         const selectedNode = nextProps.selectedNode;
         const contentTypeNode = selectedNode.model as ContentTypeNode;
 
-        ContentTypeFactory.Instance().readSchema(true)
-            .then((jsonSchema: any) => {
-                const contentModel = contentTypeNode.ContentModel;
-                if (contentModel === undefined)
-                    return;
+        const contentModel = contentTypeNode.ContentModel;
+        if (contentModel === undefined)
+            return;
 
-                const contentTypeExists = jsonSchema.definitions.contentTypes.hasOwnProperty(SchemaHelper.TrimRefPath(contentModel.SchemaId));
-                if (!contentTypeExists) {
-                    this.setState({
-                        currentSchema: {},
-                        title: ''
-                    });
-                    return;
-                }
-
-                SchemaHelper.ResolveSchemaReference(jsonSchema, contentModel.SchemaId).then((resolvedSchema) => {
-                    this.setState({
-                        selectedNode: selectedNode,
-                        currentSchema: resolvedSchema,
-                        title: SchemaHelper.TrimRefPath(contentModel.SchemaId),
-                        formData: contentModel.Data
-                    });
-                });
+        const contentTypeExists = this._contentSchemaWrapper.Definitions.contentTypes.hasOwnProperty(SchemaHelper.TrimRefPath(contentModel.SchemaId));
+        if (!contentTypeExists) {
+            this.setState({
+                currentSchema: {},
+                title: ''
             });
+            return;
+        }
+
+        SchemaHelper.ResolveSchemaReference(this._contentSchemaWrapper.Schema, contentModel.SchemaId).then((resolvedSchema) => {
+            this.setState({
+                selectedNode: selectedNode,
+                currentSchema: resolvedSchema,
+                title: SchemaHelper.TrimRefPath(contentModel.SchemaId),
+                formData: contentModel.Data
+            });
+        });
     }
 
     onValueChanged = (event: IChangeEvent) => {
@@ -86,7 +88,7 @@ class ContentInspector extends React.Component<Props, State> {
 
     render() {
         if (this.state.selectedNode === null)
-            return (<div/>);
+            return (<div />);
 
         return (
             <div id="inspectorEditWindow">
@@ -98,7 +100,7 @@ class ContentInspector extends React.Component<Props, State> {
                     onSubmit={this.onSubmit}
                 // onError={this.log('errors')}
                 >
-                    <div/> {/* Removes default rendered 'submit' button */}
+                    <div /> {/* Removes default rendered 'submit' button */}
                 </Form>
             </div>
         );

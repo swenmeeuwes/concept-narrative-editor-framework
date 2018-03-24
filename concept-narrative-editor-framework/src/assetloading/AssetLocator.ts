@@ -12,7 +12,7 @@ if (isElectron()) {
 
 class AssetLocator {
     // todo: FIX THIS PATH FOR PRODUCTION!
-    public static RELATIVE_CONTENT_SCHEMA_PATH: string = 'src/assets/content-schema.json';
+    public static readonly RELATIVE_CONTENT_SCHEMA_PATH: string = 'src/assets/content-schema.json';
 
     public static resolvePath(relativeAssetPath: string): string {
         const appPath = app.getAppPath();
