@@ -17,8 +17,7 @@ if (isElectron()) {
 class AssetLoader {
     private static _instance: AssetLoader;
 
-    private _refParser: RefParser;
-
+    private _refParser: RefParser;    
     private _library: AssetLibrary;
 
     public static get Instance() {
