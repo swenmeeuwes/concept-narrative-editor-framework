@@ -1,32 +1,59 @@
 import * as joint from 'jointjs';
 import ContentModel from './ContentModel';
 import SchemaHelper from 'src/SchemaHelper';
+import TextFormattingUtil from '../util/TextFormattingUtil';
+
+import './ContentTypeNode.css';
 
 // Is more like a mediator between the joint view and content model
+// class ContentTypeNode extends joint.shapes.devs.Model.extend({
+//   markup: '<g class="rotatable"><g class="scalable"><rect/></g><text/></g>'
+// })
+
 class ContentTypeNode extends joint.shapes.devs.Model {
-    private _contentModel: ContentModel;
+  private _contentModel: ContentModel;
 
-    constructor(attributes: joint.shapes.devs.ModelAttributes, schemaId: string) {
-      super(attributes);
+  constructor(attributes: joint.shapes.devs.ModelAttributes, schemaId: string) {
+    attributes.inPorts = ['in'];
+    attributes.outPorts = ['out'];
+    
+    super(attributes);
 
-      this.ContentModel = new ContentModel(schemaId);
+    // Move to external file?
+    // Add <g class="rotatable"><g class="scalable">?
+    this.set('markup',
+      `<g class="content-type-node">
+      <rect class="body" />
+      <text class="label" />
+      <g class="inPorts"/>
+      <g class="outPorts"/>
+      </g>`);
 
-      this.addInPort('In');
-      this.addOutPort('Out');
-    }
+    this.set('portMarkup', `<circle class="port-body"/>`);
 
-    public get ContentModel() {
-      return this._contentModel;
-    }
+    this.attr({
+      '.port-label': {
+        text: ''
+      }
+    });
 
-    public set ContentModel(newContentModel: ContentModel) {
-      this._contentModel = newContentModel;
-      this.attr('.label', { 
-        text: SchemaHelper.TrimRefPath(newContentModel.SchemaId), 
-        'ref-x': .5, 
-        'ref-y': .2 
-      });
-    }
+    this.ContentModel = new ContentModel(schemaId);
+  }
+
+  public get ContentModel() {
+    return this._contentModel;
+  }
+
+  public set ContentModel(newContentModel: ContentModel) {
+    this._contentModel = newContentModel;
+
+    let labelText = SchemaHelper.TrimRefPath(newContentModel.SchemaId);
+    labelText = TextFormattingUtil.CamelToSpaces(labelText);
+    this.attr('.label', {
+      text: labelText,
+      fontSize: 12
+    });
+  }
 }
-  
+
 export default ContentTypeNode;

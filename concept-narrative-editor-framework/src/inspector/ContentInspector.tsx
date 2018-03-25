@@ -1,12 +1,12 @@
 import * as React from 'react';
 import Form, { IChangeEvent } from 'react-jsonschema-form';
-import ContentTypeNode from './model/ContentTypeNode';
-import ContentSchemaWrapper from './schema/ContentSchemaWrapper';
-import SchemaHelper from './SchemaHelper';
-import AssetLoader from './assetloading/AssetLoader';
+import ContentTypeNode from '../model/ContentTypeNode';
+import ContentSchemaWrapper from '../schema/ContentSchemaWrapper';
+import SchemaHelper from '../SchemaHelper';
+import AssetLoader from '../assetloading/AssetLoader';
 
 import './ContentInspector.css';
-import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
 interface Props {
     selectedNode: joint.dia.CellView | null;

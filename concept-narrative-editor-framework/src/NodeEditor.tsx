@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as joint from 'jointjs';
 import ContentTypeNode from './model/ContentTypeNode';
 import NodeEditorCanvas from './model/NodeEditorCanvas';
-import ContentInspector from './ContentInspector';
+import ContentInspector from './inspector/ContentInspector';
 
 import '../node_modules/jointjs/dist/joint.min.css';
 import './NodeEditor.css';
@@ -37,7 +37,7 @@ class NodeEditor extends React.Component<Props, State> {
       parentContainer: parentContainer,
       container: container,
       model: this._graph,
-      onNodeSelected: this.onNodeSelected.bind(this)
+      onNodeSelected: this.onNodeSelected.bind(this)    
     });
 
     // Just for testing
