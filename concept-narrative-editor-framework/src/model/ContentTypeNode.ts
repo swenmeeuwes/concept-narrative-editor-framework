@@ -16,17 +16,21 @@ class ContentTypeNode extends joint.shapes.devs.Model {
   constructor(attributes: joint.shapes.devs.ModelAttributes, schemaId: string) {
     attributes.inPorts = ['in'];
     attributes.outPorts = ['out'];
-    
+
     super(attributes);
 
     // Move to external file?
     // Add <g class="rotatable"><g class="scalable">?
     this.set('markup',
       `<g class="content-type-node">
+      <defs>
+      <clipPath id="textClip">
+      <rect x="-42" width="84" height="35" />
+      </clipPath>
+      </defs>
+
       <rect class="body" />
-      <text class="label" />
-      <g class="inPorts"/>
-      <g class="outPorts"/>
+      <text class="label" clip-path="url(#textClip)" />
       </g>`);
 
     this.set('portMarkup', `<circle class="port-body"/>`);
