@@ -86,7 +86,6 @@ class ContentInspector extends React.Component<Props, State> {
                     onChange={this.onContentTypeChange}
                 />
                 <hr />
-                <h4>{this.state.title}</h4>
                 <Form
                     schema={this.state.currentSchema}
                     formData={this.state.formData}
