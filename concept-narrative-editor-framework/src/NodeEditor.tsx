@@ -6,6 +6,9 @@ import ContentInspector from './inspector/ContentInspector';
 
 import '../node_modules/jointjs/dist/joint.min.css';
 import './NodeEditor.css';
+import ApplicationMenu from './menu/ApplicationMenu';
+import AssetLoader from './assetloading/AssetLoader';
+import SchemaHelper from './util/SchemaHelper';
 
 interface Props { }
 interface State {
@@ -24,9 +27,22 @@ class NodeEditor extends React.Component<Props, State> {
     };
 
     this._graph = new joint.dia.Graph();
+
+    // hack ;c
+    ApplicationMenu.Instance.handleInsert = this.handleInsert;
   }
 
-  getCanvas(): NodeEditorCanvas {
+  public handleInsert = () => {
+    const firstContentType = AssetLoader.Instance.Library.contentSchemaWrapper.AvailableContentTypes[0];
+
+    const model = new ContentTypeNode({
+      position: { x: 50, y: 50 },
+      size: { width: 96, height: 96 }
+    }, SchemaHelper.padContentTypeDefinition(firstContentType));
+    this._graph.addCell(model);
+  }
+
+  public get Canvas(): NodeEditorCanvas {
     return this._canvas;
   }
 
@@ -37,11 +53,11 @@ class NodeEditor extends React.Component<Props, State> {
       parentContainer: parentContainer,
       container: container,
       model: this._graph,
-      onNodeSelected: this.onNodeSelected.bind(this)    
+      onNodeSelected: this.onNodeSelected.bind(this)
     });
 
     // Just for testing
-    for (var i = 0; i < 3; i++) {      
+    for (var i = 0; i < 3; i++) {
       let id = '#/definitions/contentTypes/textContent';
       if (i === 1)
         id = '#/definitions/contentTypes/variableMutationContent';
@@ -62,7 +78,7 @@ class NodeEditor extends React.Component<Props, State> {
     if (this.state.selectedNode !== null)
       this.state.selectedNode.unhighlight();
 
-    if (cellView !== null)  
+    if (cellView !== null)
       cellView.highlight();
 
     this.setState({

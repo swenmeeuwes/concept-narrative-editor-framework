@@ -1,5 +1,6 @@
 import * as joint from 'jointjs';
-import ContentTypeNode from 'src/model/ContentTypeNode';
+import * as SvgPanZoom from 'svg-pan-zoom';
+import ContentTypeNode from '../model/ContentTypeNode';
 
 // Functions definitions
 type OnNodeSelected = (cellView: joint.dia.CellView | null) => void;
@@ -14,6 +15,7 @@ interface NodeEditorCanvasProperties {
 class NodeEditorCanvas {
     private _paper: joint.dia.Paper;
     private _props: NodeEditorCanvasProperties;
+    private _panZoomInstance: SvgPanZoom.Instance;
 
     constructor(props: NodeEditorCanvasProperties) {
         this._props = props;
@@ -36,6 +38,16 @@ class NodeEditorCanvas {
             validateConnection: this.validateConnection
         });
 
+        this._panZoomInstance = SvgPanZoom(`#${props.container.id} svg`, {
+            center: false,
+            zoomEnabled: true,
+            panEnabled: true,
+            fit: false,
+            minZoom: 0.8,
+            maxZoom: 1.2,
+            zoomScaleSensitivity: 0.1
+        });
+
         this.onWindowResize(); // Set initial size
 
         this.addEventListeners();
@@ -47,6 +59,8 @@ class NodeEditorCanvas {
 
     private addEventListeners() {
         window.addEventListener('resize', this.onWindowResize);
+        this._paper.on('cell:pointerdown', this.onPointerDown);
+        this._paper.on('cell:pointerup', this.onPointerUp);
         this._paper.on('cell:pointerclick', this.onNodeSelected);
         this._paper.on('blank:pointerdown', this.onBlankPointerDown);
     }
@@ -63,6 +77,16 @@ class NodeEditorCanvas {
             this._props.onNodeSelected(cellView);
         else
             this._props.onNodeSelected(null);
+
+        this._panZoomInstance.disablePan();
+    }
+
+    private onPointerDown = () => {
+        this._panZoomInstance.disablePan();
+    }
+
+    private onPointerUp = () => {
+        this._panZoomInstance.enablePan();
     }
 
     private onBlankPointerDown = (evt: EventTarget, x: number, y: number) => {
