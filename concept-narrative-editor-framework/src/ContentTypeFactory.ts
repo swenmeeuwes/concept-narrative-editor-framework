@@ -12,6 +12,7 @@ class ContentTypeFactory {
     public static Instance(): ContentTypeFactory {
         return this._instance || (this._instance = new ContentTypeFactory());
     }
+    
     private constructor() {
         this._schemaValidator = new Ajv();
 

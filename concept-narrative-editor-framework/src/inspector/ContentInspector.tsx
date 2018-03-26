@@ -1,12 +1,16 @@
 import * as React from 'react';
 import Form, { IChangeEvent } from 'react-jsonschema-form';
+
 import ContentTypeNode from '../model/ContentTypeNode';
 import ContentSchemaWrapper from '../schema/ContentSchemaWrapper';
-import SchemaHelper from '../SchemaHelper';
+import SchemaHelper from '../util/SchemaHelper';
 import AssetLoader from '../assetloading/AssetLoader';
+import TextFormattingUtil from '../util/TextFormattingUtil';
+import ContentModel from '../model/ContentModel';
 
 import './ContentInspector.css';
 import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
+import EnumProperty from '../property/EnumProperty';
 
 interface Props {
     selectedNode: joint.dia.CellView | null;
@@ -20,11 +24,13 @@ interface State {
 
 class ContentInspector extends React.Component<Props, State> {
     private _contentSchemaWrapper: ContentSchemaWrapper;
+    private _availableContentTypes: string[];
 
     constructor(props: Props) {
         super(props);
 
         this._contentSchemaWrapper = AssetLoader.Instance.Library.contentSchemaWrapper;
+        this._availableContentTypes = this._contentSchemaWrapper.AvailableContentTypes;
 
         this.state = {
             currentSchema: {},
@@ -47,7 +53,7 @@ class ContentInspector extends React.Component<Props, State> {
         if (contentModel === undefined)
             return;
 
-        const contentTypeExists = this._contentSchemaWrapper.Definitions.contentTypes.hasOwnProperty(SchemaHelper.TrimRefPath(contentModel.SchemaId));
+        const contentTypeExists = this._contentSchemaWrapper.Definitions.contentTypes.hasOwnProperty(SchemaHelper.trimRefPath(contentModel.SchemaId));
         if (!contentTypeExists) {
             this.setState({
                 currentSchema: {},
@@ -56,24 +62,53 @@ class ContentInspector extends React.Component<Props, State> {
             return;
         }
 
-        SchemaHelper.ResolveSchemaReference(this._contentSchemaWrapper.Schema, contentModel.SchemaId).then((resolvedSchema) => {
+        SchemaHelper.resolveSchemaReference(this._contentSchemaWrapper.Schema, contentModel.SchemaId).then((resolvedSchema) => {
             this.setState({
                 selectedNode: selectedNode,
                 currentSchema: resolvedSchema,
-                title: SchemaHelper.TrimRefPath(contentModel.SchemaId),
+                title: TextFormattingUtil.camelToSpaces(SchemaHelper.trimRefPath(contentModel.SchemaId)),
                 formData: contentModel.Data
             });
         });
     }
 
-    onValueChanged = (event: IChangeEvent) => {
+    render() {
+        if (this.state.selectedNode === null)
+            return (<div />);
+
+        const contentTypeNode = this.state.selectedNode.model as ContentTypeNode;
+        const contentType = SchemaHelper.trimRefPath(contentTypeNode.ContentModel.SchemaId);
+        return (
+            <div id="inspectorEditWindow">
+                <h4>Type</h4>
+                <EnumProperty
+                    items={this._availableContentTypes}
+                    selected={contentType}
+                    onChange={this.onContentTypeChange}
+                />
+                <hr />
+                <h4>{this.state.title}</h4>
+                <Form
+                    schema={this.state.currentSchema}
+                    formData={this.state.formData}
+                    onChange={this.onContentDataValueChanged}
+                    onSubmit={this.onContentDataSubmit}
+                // onError={this.log('errors')}
+                >
+                    <div /> {/* Removes default rendered 'submit' button */}
+                </Form>
+            </div>
+        );
+    }
+
+    private onContentDataValueChanged = (event: IChangeEvent) => {
         if (this.state.selectedNode !== null) {
             const contentTypeNode = this.state.selectedNode.model as ContentTypeNode;
             contentTypeNode.ContentModel.Data = event.formData;
         }
     }
 
-    onSubmit = (formData: FormData) => {
+    private onContentDataSubmit = (formData: FormData) => {
         // Might be overkill, since it is already set in onValueChanged ...
         if (this.state.selectedNode !== null) {
             const contentTypeNode = this.state.selectedNode.model as ContentTypeNode;
@@ -86,24 +121,27 @@ class ContentInspector extends React.Component<Props, State> {
         this.clear();
     }
 
-    render() {
-        if (this.state.selectedNode === null)
-            return (<div />);
+    private onContentTypeChange = (event: React.FormEvent<HTMLSelectElement>) => {
+        const selectedValue = event.currentTarget.value;
 
-        return (
-            <div id="inspectorEditWindow">
-                <h4>{this.state.title}</h4>
-                <Form
-                    schema={this.state.currentSchema}
-                    formData={this.state.formData}
-                    onChange={this.onValueChanged}
-                    onSubmit={this.onSubmit}
-                // onError={this.log('errors')}
-                >
-                    <div /> {/* Removes default rendered 'submit' button */}
-                </Form>
-            </div>
-        );
+        // First check if it is an available content type
+        if (this._contentSchemaWrapper.AvailableContentTypes.indexOf(selectedValue) === -1)
+            return; // Reject
+
+        if (!this.state.selectedNode)
+            return;
+
+        const contentTypeNode = this.state.selectedNode.model as ContentTypeNode;
+        contentTypeNode.ContentModel = new ContentModel(SchemaHelper.padContentTypeDefinition(selectedValue));
+
+        const contentModel = contentTypeNode.ContentModel;
+        SchemaHelper.resolveSchemaReference(this._contentSchemaWrapper.Schema, contentModel.SchemaId).then((resolvedSchema) => {
+            this.setState({
+                currentSchema: resolvedSchema,
+                title: TextFormattingUtil.camelToSpaces(SchemaHelper.trimRefPath(contentModel.SchemaId)),
+                formData: contentModel.Data
+            });
+        });
     }
 
     private clear() {

@@ -1,6 +1,6 @@
 import * as joint from 'jointjs';
 import ContentModel from './ContentModel';
-import SchemaHelper from 'src/SchemaHelper';
+import SchemaHelper from '../util/SchemaHelper';
 import TextFormattingUtil from '../util/TextFormattingUtil';
 
 import './ContentTypeNode.css';
@@ -47,8 +47,8 @@ class ContentTypeNode extends joint.shapes.devs.Model {
   public set ContentModel(newContentModel: ContentModel) {
     this._contentModel = newContentModel;
 
-    let labelText = SchemaHelper.TrimRefPath(newContentModel.SchemaId);
-    labelText = TextFormattingUtil.CamelToSpaces(labelText);
+    let labelText = SchemaHelper.trimRefPath(newContentModel.SchemaId);
+    labelText = TextFormattingUtil.camelToSpaces(labelText);
     this.attr('.label', {
       text: labelText,
       fontSize: 12

@@ -1,5 +1,5 @@
 class TextFormattingUtil {
-    public static CamelToSpaces(subject: string): string {
+    public static camelToSpaces(subject: string): string {
         return subject
             // Insert a space before all caps
             .replace(/([A-Z])/g, ' $1')
