@@ -46,22 +46,6 @@ class NodeEditor extends React.Component<Props, State> {
       model: this._graph,
       onNodeSelected: this.onNodeSelected.bind(this)
     });
-
-    // Just for testing
-    for (var i = 0; i < 3; i++) {
-      let id = '#/definitions/contentTypes/textContent';
-      if (i === 1)
-        id = '#/definitions/contentTypes/variableMutationContent';
-      if (i === 2)
-        id = '#/definitions/contentTypes/imageContent';
-
-      const model = new ContentTypeNode({
-        position: { x: 100 + 150 * i, y: 50 + 100 * i },
-        size: { width: 96, height: 96 }
-      }, id);
-
-      this._graph.addCell(model);
-    }
   }
 
   onNodeSelected(cellView: joint.dia.CellView) {
