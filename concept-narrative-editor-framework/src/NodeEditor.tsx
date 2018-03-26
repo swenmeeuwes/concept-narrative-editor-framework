@@ -8,7 +8,7 @@ import '../node_modules/jointjs/dist/joint.min.css';
 import './NodeEditor.css';
 import ApplicationMenu from './menu/ApplicationMenu';
 import AssetLoader from './assetloading/AssetLoader';
-import SchemaHelper from './util/SchemaHelper';
+import SchemaHelper from './schema/SchemaHelper';
 
 interface Props { }
 interface State {

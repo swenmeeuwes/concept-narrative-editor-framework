@@ -1,6 +1,6 @@
 import * as joint from 'jointjs';
 import ContentModel from './ContentModel';
-import SchemaHelper from '../util/SchemaHelper';
+import SchemaHelper from '../schema/SchemaHelper';
 import TextFormattingUtil from '../util/TextFormattingUtil';
 
 import './ContentTypeNode.css';
