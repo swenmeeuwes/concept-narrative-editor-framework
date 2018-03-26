@@ -78,6 +78,7 @@ class ContentInspector extends React.Component<Props, State> {
 
         const contentTypeNode = this.state.selectedNode.model as ContentTypeNode;
         const contentType = SchemaHelper.trimRefPath(contentTypeNode.ContentModel.SchemaId);
+        
         return (
             <div id="inspectorEditWindow">
                 <h4>Type</h4>

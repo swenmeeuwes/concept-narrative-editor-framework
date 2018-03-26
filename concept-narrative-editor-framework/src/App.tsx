@@ -1,6 +1,6 @@
 import * as React from 'react';
-
 import isElectron from 'is-electron';
+
 import NodeEditor from './NodeEditor';
 import AssetLoader from './assetloading/AssetLoader';
 
