@@ -33,6 +33,13 @@ class EnumProperty extends React.Component<Props, State> {
             this.props.onChange(event);
     }
 
+    componentWillReceiveProps(nextProps: Props) {
+        this.setState({
+            items: nextProps.items,
+            selected: nextProps.selected || nextProps.items[0]
+        });
+    }
+
     render() {
         const options = this.state.items.map(item => (
             <option
