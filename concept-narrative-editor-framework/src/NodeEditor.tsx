@@ -108,6 +108,10 @@ class NodeEditor extends React.Component<Props, State> {
       return;
 
     selectedNode.model.remove();
+
+    this.setState({
+      selectedNode: null
+    });
   }
 }
 
