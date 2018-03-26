@@ -30,16 +30,7 @@ class NodeEditor extends React.Component<Props, State> {
 
     // hack ;c
     ApplicationMenu.Instance.handleInsert = this.handleInsert;
-  }
-
-  public handleInsert = () => {
-    const firstContentType = AssetLoader.Instance.Library.contentSchemaWrapper.AvailableContentTypes[0];
-
-    const model = new ContentTypeNode({
-      position: { x: 50, y: 50 },
-      size: { width: 96, height: 96 }
-    }, SchemaHelper.padContentTypeDefinition(firstContentType));
-    this._graph.addCell(model);
+    ApplicationMenu.Instance.handleDelete = this.handleDelete;
   }
 
   public get Canvas(): NodeEditorCanvas {
@@ -99,6 +90,24 @@ class NodeEditor extends React.Component<Props, State> {
         </div>
       </div>
     );
+  }
+
+  private handleInsert = () => {
+    const firstContentType = AssetLoader.Instance.Library.contentSchemaWrapper.AvailableContentTypes[0];
+
+    const model = new ContentTypeNode({
+      position: { x: 50, y: 50 },
+      size: { width: 96, height: 96 }
+    }, SchemaHelper.padContentTypeDefinition(firstContentType));
+    this._graph.addCell(model);
+  }
+
+  private handleDelete = () => {
+    const selectedNode = this.state.selectedNode;
+    if (!selectedNode || !selectedNode.model)
+      return;
+
+    selectedNode.model.remove();
   }
 }
 

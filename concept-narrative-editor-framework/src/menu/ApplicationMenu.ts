@@ -17,6 +17,13 @@ class ApplicationMenu {
                 click() {
                     ApplicationMenu.Instance.handleInsert();
                 }
+            },
+            {
+                label: 'Delete',
+                accelerator: 'CmdOrCtrl+D',
+                click() {
+                    ApplicationMenu.Instance.handleDelete();
+                }
             }
             // { role: 'undo' },
             // { role: 'redo' },
@@ -52,7 +59,9 @@ class ApplicationMenu {
     }
     ];
 
+    // Methods to be overwritten, a bit hacky atm... fix: proper event dispatcher
     public handleInsert = (): void => { throw '[ApplicationMenu] Insert not implemented'; };
+    public handleDelete = (): void => { throw '[ApplicationMenu] Delete not implemented'; };
 
     public static get Instance(): ApplicationMenu {
         return this._instance || (this._instance = new ApplicationMenu());
