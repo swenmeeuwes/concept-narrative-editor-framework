@@ -167,11 +167,13 @@
 					"$ref": "#/definitions/propertyTypes/stringProperty"
 				},
 				"label": {
+					"title": "Label",
 					"$ref": "#/definitions/propertyTypes/stringProperty"
 				},
 				"contentID": {
 					"allOf": [
 						{
+							"title": "Content ID",
 							"$ref": "#/definitions/propertyTypes/stringProperty"
 						},
 						{
