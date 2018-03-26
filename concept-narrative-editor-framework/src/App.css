@@ -1,5 +1,6 @@
 html, body {
     color: #2B3E50;
+    overflow: hidden;
 }
 
 #notSupported {
