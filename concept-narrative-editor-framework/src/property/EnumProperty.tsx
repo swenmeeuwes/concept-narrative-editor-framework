@@ -1,4 +1,5 @@
 import * as React from 'react';
+import TextFormattingUtil from '../util/TextFormattingUtil';
 
 type OnChangeEvent = (event: React.FormEvent<HTMLSelectElement>) => void;
 
@@ -33,7 +34,15 @@ class EnumProperty extends React.Component<Props, State> {
     }
 
     render() {
-        const options = this.state.items.map(item => <option key={item} value={item}>{item}</option>);
+        const options = this.state.items.map(item => (
+            <option
+                key={item}
+                value={item}
+            >
+                {TextFormattingUtil.camelToSpaces(item)}
+            </option>)
+        );
+
         return (
             <select
                 value={this.state.selected}
