@@ -2,6 +2,7 @@ import * as Ajv from 'ajv';
 import * as RefParser from 'json-schema-ref-parser';
 
 import ContentSchema from './ContentSchema';
+import SchemaHelper from './SchemaHelper';
 
 const resolveAllOf = require('json-schema-resolve-allof');
 
@@ -49,6 +50,10 @@ class ContentSchemaWrapper {
 
     public get AvailableContentTypes(): string[] {
         return Object.keys(this._schema.contentTypes);
+    }
+
+    public get AvailableContentTypeURIs(): string[] {
+        return Object.keys(this._schema.contentTypes).map(contentType => SchemaHelper.padContentTypeDefinition(contentType));
     }
 
     /**

@@ -29,8 +29,8 @@ class SchemaHelper {
         return schemaRefHierarchy.reduce((accumulator, current) => accumulator[current], schema);
     }
 
-    /**
-     * Trims path of schema reference string 
+    /**    
+     * Trims path of schema reference string; gets type from URI    
      * E.g. '#/definitions/foo' will return 'foo'
      */
     public static trimRefPath(schemaRef: string): string {
@@ -43,7 +43,7 @@ class SchemaHelper {
      * E.g. 'foo' will return '#/definitions/contentTypes/foo'
      */
     public static padContentTypeDefinition(contentTypeName: string) {
-        return `#/contentTypes/${contentTypeName}`;
+        return `#/contentTypes/${contentTypeName}`; // Maybe nice to define prefix in the json schema aswell
     }
 }
 

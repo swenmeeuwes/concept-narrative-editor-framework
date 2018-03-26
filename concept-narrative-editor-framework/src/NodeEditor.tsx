@@ -1,14 +1,12 @@
 import * as React from 'react';
 import * as joint from 'jointjs';
-import ContentTypeNode from './model/ContentTypeNode';
 import NodeEditorCanvas from './model/NodeEditorCanvas';
 import ContentInspector from './inspector/ContentInspector';
 
 import '../node_modules/jointjs/dist/joint.min.css';
 import './NodeEditor.css';
 import ApplicationMenu from './menu/ApplicationMenu';
-import AssetLoader from './assetloading/AssetLoader';
-import SchemaHelper from './schema/SchemaHelper';
+import ContentTypeFactory from './ContentTypeFactory';
 
 interface Props { }
 interface State {
@@ -77,12 +75,7 @@ class NodeEditor extends React.Component<Props, State> {
   }
 
   private handleInsert = () => {
-    const firstContentType = AssetLoader.Instance.Library.contentSchemaWrapper.AvailableContentTypes[0];
-
-    const model = new ContentTypeNode({
-      position: { x: 50, y: 50 },
-      size: { width: 96, height: 96 }
-    }, SchemaHelper.padContentTypeDefinition(firstContentType));
+    const model = ContentTypeFactory.Instance.createContent();
     this._graph.addCell(model);
   }
 
