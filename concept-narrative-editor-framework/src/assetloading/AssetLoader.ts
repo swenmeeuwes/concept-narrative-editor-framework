@@ -1,6 +1,3 @@
-import * as RefParser from 'json-schema-ref-parser';
-
-import ContentSchema from '../schema/ContentSchema';
 import AssetLocator from './AssetLocator';
 
 import isElectron from 'is-electron';
@@ -17,7 +14,6 @@ if (isElectron()) {
 class AssetLoader {
     private static _instance: AssetLoader;
 
-    private _refParser: RefParser;    
     private _library: AssetLibrary;
 
     public static get Instance() {
@@ -38,15 +34,10 @@ class AssetLoader {
                 try {
                     const jsonData = JSON.parse(data);
 
-                    this._refParser.dereference(jsonData)
-                        .then((schema: ContentSchema) => {
-                            const schemaWrapper = new ContentSchemaWrapper(schema);
-                            this._library.contentSchemaWrapper = schemaWrapper; // Cache (should probably happen with id/ paired)
-                            resolve(schemaWrapper);
-                        })
-                        .catch((refParseError) => {
-                            reject({ error: refParseError });
-                        });
+                    const schemaWrapper = new ContentSchemaWrapper(jsonData);
+                    this._library.contentSchemaWrapper = schemaWrapper; // Cache (should probably happen with id/ paired)
+                    
+                    resolve(schemaWrapper);
                 } catch (jsonParseError) {
                     reject({ error: jsonParseError });
                 }
@@ -55,7 +46,6 @@ class AssetLoader {
     }
 
     private constructor() {
-        this._refParser = new RefParser();
         this._library = new AssetLibrary();
     }
 }

@@ -1,13 +1,14 @@
 type Definitions = {
+    baseContent: Object;
     propertyTypes: Object;
-    contentTypes: Object;
 };
 
-class ContentSchema {
-    public $schema: string; // URI?
-    public $id: string; // URI?
-    public description: string;
-    public definitions: Definitions;
-}
+type ContentSchema = {
+    $schema: string;
+    $id: string;
+    description: string;
+    contentTypes: Object;
+    definitions: Definitions;
+};
 
 export default ContentSchema;

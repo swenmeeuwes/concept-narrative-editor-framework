@@ -1,7 +1,9 @@
 import * as RefParser from 'json-schema-ref-parser';
+import ContentSchema from './ContentSchema';
 
 class SchemaHelper {
     /**
+     * @Obsolete
      * Resolves the schema reference and return the schema that is referenced
      */
     public static resolveSchemaReference(schema: Object, schemaRef: string, refParser: RefParser = new RefParser()): Promise<Object> {
@@ -19,6 +21,14 @@ class SchemaHelper {
         });
     }
 
+    public static resolveURI(uri: string, schema: ContentSchema) {
+        const schemaRefHierarchy = uri.replace('#', '').split('/');
+        if (schemaRefHierarchy[0] === '')
+            schemaRefHierarchy.shift();
+
+        return schemaRefHierarchy.reduce((accumulator, current) => accumulator[current], schema);
+    }
+
     /**
      * Trims path of schema reference string 
      * E.g. '#/definitions/foo' will return 'foo'
@@ -33,7 +43,7 @@ class SchemaHelper {
      * E.g. 'foo' will return '#/definitions/contentTypes/foo'
      */
     public static padContentTypeDefinition(contentTypeName: string) {
-        return `#/definitions/contentTypes/${contentTypeName}`;
+        return `#/contentTypes/${contentTypeName}`;
     }
 }
 

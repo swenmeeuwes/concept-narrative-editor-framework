@@ -53,7 +53,7 @@ class ContentInspector extends React.Component<Props, State> {
         if (contentModel === undefined)
             return;
 
-        const contentTypeExists = this._contentSchemaWrapper.Definitions.contentTypes.hasOwnProperty(SchemaHelper.trimRefPath(contentModel.SchemaId));
+        const contentTypeExists = this._contentSchemaWrapper.Schema.contentTypes.hasOwnProperty(SchemaHelper.trimRefPath(contentModel.SchemaId));
         if (!contentTypeExists) {
             this.setState({
                 currentSchema: {},
@@ -62,13 +62,11 @@ class ContentInspector extends React.Component<Props, State> {
             return;
         }
 
-        SchemaHelper.resolveSchemaReference(this._contentSchemaWrapper.Schema, contentModel.SchemaId).then((resolvedSchema) => {
-            this.setState({
-                selectedNode: selectedNode,
-                currentSchema: resolvedSchema,
-                title: TextFormattingUtil.camelToSpaces(SchemaHelper.trimRefPath(contentModel.SchemaId)),
-                formData: contentModel.Data
-            });
+        this.setState({
+            selectedNode: selectedNode,
+            currentSchema: SchemaHelper.resolveURI(contentModel.SchemaId, this._contentSchemaWrapper.FlatSchema),
+            title: TextFormattingUtil.camelToSpaces(SchemaHelper.trimRefPath(contentModel.SchemaId)),
+            formData: contentModel.Data
         });
     }
 
@@ -136,12 +134,10 @@ class ContentInspector extends React.Component<Props, State> {
         contentTypeNode.ContentModel = new ContentModel(SchemaHelper.padContentTypeDefinition(selectedValue));
 
         const contentModel = contentTypeNode.ContentModel;
-        SchemaHelper.resolveSchemaReference(this._contentSchemaWrapper.Schema, contentModel.SchemaId).then((resolvedSchema) => {
-            this.setState({
-                currentSchema: resolvedSchema,
-                title: TextFormattingUtil.camelToSpaces(SchemaHelper.trimRefPath(contentModel.SchemaId)),
-                formData: contentModel.Data
-            });
+        this.setState({
+            currentSchema: SchemaHelper.resolveURI(contentModel.SchemaId, this._contentSchemaWrapper.FlatSchema),
+            title: TextFormattingUtil.camelToSpaces(SchemaHelper.trimRefPath(contentModel.SchemaId)),
+            formData: contentModel.Data
         });
     }
 
