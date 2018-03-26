@@ -1,0 +1,497 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "http://www.ranjnet.nl/ozcontent#",
+	"title": "&ranj oz content",
+    "description": "This schema defines the content types within the oz content",
+	"definitions": {
+		"propertyTypes": {
+			"stringProperty": {
+				"$id": "#/definitions/propertyTypes/stringProperty",
+				"type": "string"
+			},
+			"booleanProperty": {
+				"$id": "#/definitions/propertyTypes/booleanProperty",
+				"type": "boolean"
+			},
+			"jsonObjectProperty": {
+				"$id": "#/definitions/propertyTypes/jsonObjectProperty",
+				"type": "string"
+			},
+			"arrayProperty": {
+				"$id": "#/definitions/propertyTypes/arrayProperty",
+				"type": "array"
+			},
+			"localizableStringProperty": {
+				"$id": "#/definitions/propertyTypes/localizableStringProperty",
+				"type": "object",
+				"properties": {
+					"languagePackID": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"languagePackID"
+				]
+			},
+			"urlProperty": {
+				"$id": "#/definitions/propertyTypes/urlProperty",
+				"type": "string"
+			},
+			"resourceProperty": {
+				"$id": "#/definitions/propertyTypes/resourceProperty",
+				"type": "object",
+				"properties": {
+					"resourceID": {
+						"allOf": [
+							{
+								"$ref": "#/definitions/propertyTypes/stringProperty"
+							},
+							{
+								"tooltip": "ID of the video fragment",
+								"description": "ID of the video fragment",
+								"propertyIndex": 1
+							}
+						]
+					},
+					"url": {
+						"allOf": [
+							{
+								"$ref": "#/definitions/propertyTypes/urlProperty"
+							},
+							{
+								"propertyIndex": 2
+							}
+						]
+					}
+				}
+			},
+			"variableMutationProperty": {
+				"$id": "#/definitions/propertyTypes/variableMutationProperty",
+				"type": "object",
+				"properties": {
+					"variable": {
+						"$ref": "#/definitions/propertyTypes/stringProperty"
+					},
+					"mutationType": {
+						"$ref": "#/definitions/propertyTypes/variableMutationTypeProperty"
+					},
+					"value": {
+						"$ref": "#/definitions/propertyTypes/variableValueProperty"
+					}
+				}
+			},
+			"variableMutationTypeProperty": {
+				"$id": "#/definitions/propertyTypes/variableMutationTypeProperty",
+				"type": "string",
+				"enum": [
+					"ADD",
+					"SET",
+					"SUBTRACT",
+					"MULTIPLY",
+					"DIVIDE"
+				],
+				"default": "SET"
+			},
+			"variableValueProperty": {
+				"$id": "#/definitions/propertyTypes/variableValueProperty",
+				"type": "string",
+				"default": "true"
+			},
+			"videoAssetProperty": {
+				"$id": "#/definitions/propertyTypes/videoAssetProperty",
+				"type": "object",
+				"properties": {
+					"resource": {
+						"allOf": [
+							{
+								"$ref": "#/definitions/propertyTypes/resourceProperty"
+							},
+							{
+								"propertyIndex": 1
+							}
+						]
+					},
+					"controls": {
+						"allOf": [
+							{
+								"$ref": "#/definitions/propertyTypes/booleanProperty"
+							},
+							{
+								"default": false,
+								"propertyIndex": 4
+							}
+						]
+					},
+					"autoPlay": {
+						"allOf": [
+							{
+								"$ref": "#/definitions/propertyTypes/booleanProperty"
+							},
+							{
+								"default": true,
+								"propertyIndex": 3
+							}
+						]
+					}
+				},
+				"required": [
+					"id",
+					"url"
+				]
+			},
+			"imageAssetProperty": {
+				"$id": "#/definitions/propertyTypes/imageAssetProperty",
+				"type": "object",
+				"properties": {
+					"resource": {
+						"allOf": [
+							{
+								"$ref": "#/definitions/propertyTypes/resourceProperty"
+							},
+							{
+								"propertyIndex": 1
+							}
+						]
+					}
+				},
+				"required": [
+					"id",
+					"url"
+				]
+			}
+		},
+		"baseContent": {
+			"type": "object",
+			"properties": {
+				"type": {
+					"$ref": "#/definitions/propertyTypes/stringProperty"
+				},
+				"label": {
+					"$ref": "#/definitions/propertyTypes/stringProperty"
+				},
+				"contentID": {
+					"allOf": [
+						{
+							"$ref": "#/definitions/propertyTypes/stringProperty"
+						},
+						{
+							"readonly": true
+						}
+					]
+				}
+			},
+			"required": [
+				"type",
+				"label"
+			]
+		}
+	},
+	"contentTypes": {
+		"audioContent": {
+			"allOf": [
+				{
+					"$ref": "#/definitions/baseContent"
+				},
+				{
+					"title": "Audio content",
+					"$id": "#/contentTypes/audioContent",
+					"stringValue": "Audio: [audio.resourceID]",
+					"properties": {
+						"audio": {
+							"$ref": "#/definitions/propertyTypes/resourceProperty"
+						}
+					}
+				}
+			]
+		},
+		"conversationTopicContent": {
+			"allOf": [
+				{
+					"$ref": "#/definitions/baseContent"
+				},
+				{
+					"title": "Conversation topic content",
+					"$id": "#/contentTypes/conversationTopicContent",
+					"stringValue": "Topic: [topicLabel.value]",
+					"properties": {
+						"topicLabel": {
+							"allOf": [
+								{
+									"$ref": "#/definitions/propertyTypes/localizableStringProperty"
+								},
+								{
+									"propertyIndex": 1
+								}
+							]
+						},
+						"topicDescription": {
+							"allOf": [
+								{
+									"$ref": "#/definitions/propertyTypes/localizableStringProperty"
+								},
+								{
+									"propertyIndex": 2,
+									"editor": "multiLineLocalizableStringEditor"
+								}
+							]
+						},
+						"topicNewCondition": {
+							"allOf": [
+								{
+									"$ref": "#/definitions/propertyTypes/stringProperty"
+								},
+								{
+									"propertyIndex": 3
+								}
+							]
+						},
+						"topicDisabledCondition": {
+							"allOf": [
+								{
+									"$ref": "#/definitions/propertyTypes/stringProperty"
+								},
+								{
+									"propertyIndex": 4
+								}
+							]
+						}
+					}
+				}
+			]
+		},
+		"dialogContent": {
+			"allOf": [
+				{
+					"$ref": "#/definitions/baseContent"
+				},
+				{
+					"title": "Dialog content",
+					"$id": "#/contentTypes/dialogContent",
+					"stringValue": "Dialog: [audio.resourceID]",
+					"properties": {
+						"dialog": {
+							"$ref": "#/definitions/propertyTypes/resourceProperty"
+						},
+						"npcID": {
+							"$ref": "#/definitions/propertyTypes/stringProperty"
+						},
+						"playerInitiated": {
+							"$ref": "#/definitions/propertyTypes/booleanProperty"
+						}
+					}
+				}
+			]
+		},
+		"imageContent": {
+			"allOf": [
+				{
+					"$ref": "#/definitions/baseContent"
+				},
+				{
+					"title": "Image content",
+					"$id": "#/contentTypes/imageContent",
+					"stringValue": "Image: [image.resourceID]",
+					"properties": {
+						"image": {
+							"$ref": "#/definitions/propertyTypes/resourceProperty"
+						}
+					}
+				}
+			]
+		},
+		"jsonObjectContent": {
+			"allOf": [
+				{
+					"$ref": "#/definitions/baseContent"
+				},
+				{
+					"title": "JSON object content",
+					"$id": "#/contentTypes/jsonObjectContent",
+					"stringValue": "Object: [object]",
+					"properties": {
+						"object": {
+							"$ref": "#/definitions/propertyTypes/jsonObjectProperty"
+						}
+					}
+				}
+			]
+		},
+		"keyMomentChoiceContent": {
+			"allOf": [
+				{
+					"$ref": "#/definitions/baseContent"
+				},
+				{
+					"title": "Key Moment Choice content",
+					"$id": "#/contentTypes/keyMomentChoiceContent",
+					"stringValue": "Choice: [choice.value]",
+					"properties": {
+						"keyMomentID": {
+							"allOf": [
+								{
+									"$ref": "#/definitions/propertyTypes/stringProperty"
+								},
+								{
+									"propertyIndex": 1
+								}
+							]
+						},
+						"image": {
+							"allOf": [
+								{
+									"$ref": "#/definitions/propertyTypes/resourceProperty"
+								},
+								{
+									"propertyIndex": 2
+								}
+							]
+						},
+						"situationDescription": {
+							"allOf": [
+								{
+									"$ref": "#/definitions/propertyTypes/localizableStringProperty"
+								},
+								{
+									"propertyIndex": 3,
+									"editor": "multiLineLocalizableStringEditor"
+								}
+							]
+						},
+						"choice": {
+							"allOf": [
+								{
+									"$ref": "#/definitions/propertyTypes/localizableStringProperty"
+								},
+								{
+									"propertyIndex": 4,
+									"editor": "multiLineLocalizableStringEditor"
+								}
+							]
+						},
+						"tip": {
+							"allOf": [
+								{
+									"$ref": "#/definitions/propertyTypes/localizableStringProperty"
+								},
+								{
+									"propertyIndex": 5,
+									"editor": "multiLineLocalizableStringEditor"
+								}
+							]
+						},
+						"scoreVariables": {
+							"allOf": [
+								{
+									"$ref": "#/definitions/propertyTypes/arrayProperty"
+								},
+								{
+									"items": {
+										"$ref": "#/definitions/propertyTypes/variableMutationProperty"
+									}
+								}
+							]
+						}
+					}
+				}
+			]
+		},
+		"setVariableContent": {
+			"allOf": [
+				{
+					"$ref": "#/definitions/baseContent"
+				},
+				{
+					"title": "Set variable content",
+					"$id": "#/contentTypes/setVariableContent",
+					"stringValue": "Set variables",
+					"properties": {
+						"variableMutations": {
+							"allOf": [
+								{
+									"$ref": "#/definitions/propertyTypes/arrayProperty"
+								},
+								{
+									"items": {
+										"$ref": "#/definitions/propertyTypes/variableMutationProperty"
+									}
+								}
+							]
+						}
+					}
+				}
+			]
+		},
+		"textContent": {
+			"allOf": [
+				{
+					"$ref": "#/definitions/baseContent"
+				},
+				{
+					"title": "Text content",
+					"description": "Textual content",
+					"$id": "#/contentTypes/textContent",
+					"stringValue": "[text.value]",
+					"properties": {
+						"text": {
+							"allOf": [
+								{
+									"$ref": "#/definitions/propertyTypes/localizableStringProperty"
+								},
+								{
+									"title": "Text",
+									"description": "Value of the textual content"
+								}
+							]
+						}
+					}
+				}
+			]
+		},
+		"videoContent": {
+			"allOf": [
+				{
+					"$ref": "#/definitions/baseContent"
+				},
+				{
+					"title": "Video content",
+					"$id": "#/contentTypes/videoContent",
+					"stringValue": "Video: [video.resourceID]",
+					"properties": {
+						"video": {
+							"allOf": [
+								{
+									"$ref": "#/definitions/propertyTypes/resourceProperty"
+								},
+								{
+									"propertyIndex": 1
+								}
+							]
+						},
+						"controls": {
+							"allOf": [
+								{
+									"$ref": "#/definitions/propertyTypes/booleanProperty"
+								},
+								{
+									"default": false,
+									"propertyIndex": 3
+								}
+							]
+						},
+						"autoPlay": {
+							"allOf": [
+								{
+									"$ref": "#/definitions/propertyTypes/booleanProperty"
+								},
+								{
+									"default": true,
+									"propertyIndex": 2
+								}
+							]
+						}
+					}
+				}
+			]
+		}
+	}
+}
