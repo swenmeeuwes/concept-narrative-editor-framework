@@ -35,12 +35,6 @@ class ContentTypeNode extends joint.shapes.devs.Model {
 
     this.set('portMarkup', `<circle class="port-body"/>`);
 
-    this.attr({
-      '.port-label': {
-        text: ''
-      }
-    });
-
     this.ContentModel = new ContentModel(schemaId);
   }
 
