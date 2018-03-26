@@ -1,5 +1,7 @@
 #inspectorEditWindow {
     padding: 8px;
+    height: 100%;
+    overflow-y: scroll;
 }
 
 #inspectorEditWindow .row {
