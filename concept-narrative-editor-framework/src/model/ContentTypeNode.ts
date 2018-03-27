@@ -13,9 +13,15 @@ import './ContentTypeNode.css';
 class ContentTypeNode extends joint.shapes.devs.Model {
   private _contentModel: ContentModel;
 
-  constructor(attributes: joint.shapes.devs.ModelAttributes, schemaId: string) {
-    attributes.inPorts = ['in'];
-    attributes.outPorts = ['out'];
+  constructor(contentModel: ContentModel, attributes?: joint.shapes.devs.ModelAttributes) {
+    if (!attributes) {
+      attributes = {
+        position: { x: 50, y: 50 },
+        size: { width: 96, height: 96 },
+        inPorts: ['in'],
+        outPorts: ['out']
+      };
+    }
 
     super(attributes);
 
@@ -35,7 +41,7 @@ class ContentTypeNode extends joint.shapes.devs.Model {
 
     this.set('portMarkup', `<circle class="port-body"/>`);
 
-    this.ContentModel = new ContentModel(schemaId);
+    this.ContentModel = contentModel;
   }
 
   public get ContentModel() {

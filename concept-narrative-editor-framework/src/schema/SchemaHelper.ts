@@ -21,7 +21,7 @@ class SchemaHelper {
         });
     }
 
-    public static resolveURI(uri: string, schema: ContentSchema) {
+    public static resolveURI(uri: string, schema: ContentSchema): Object {
         const schemaRefHierarchy = uri.replace('#', '').split('/');
         if (schemaRefHierarchy[0] === '')
             schemaRefHierarchy.shift();
