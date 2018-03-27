@@ -6,11 +6,11 @@ import ContentSchemaWrapper from '../schema/ContentSchemaWrapper';
 import SchemaHelper from '../schema/SchemaHelper';
 import AssetLoader from '../assetloading/AssetLoader';
 import TextFormattingUtil from '../util/TextFormattingUtil';
-import ContentModel from '../model/ContentModel';
 
 import './ContentInspector.css';
 import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import EnumProperty from '../properties/EnumProperty';
+import ContentTypeFactory from '../ContentTypeFactory';
 
 interface Props {
     selectedNode: joint.dia.CellView | null;
@@ -130,7 +130,7 @@ class ContentInspector extends React.Component<Props, State> {
             return;
 
         const contentTypeNode = this.state.selectedNode.model as ContentTypeNode;
-        contentTypeNode.ContentModel = new ContentModel(SchemaHelper.padContentTypeDefinition(selectedValue));
+        contentTypeNode.ContentModel = ContentTypeFactory.Instance.createContent(SchemaHelper.padContentTypeDefinition(selectedValue));
 
         const contentModel = contentTypeNode.ContentModel;
         this.setState({
