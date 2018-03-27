@@ -12,8 +12,8 @@ class ContentTypeFactory {
     }
 
     public createContent(contentUri?: string): ContentTypeNode {
-        // if (!this._schema || !this._schema.AvailableContentTypeURIs || this._schema.AvailableContentTypeURIs.length > 0)
-        //     throw '[ContentTypeFactory] Schema must consist of more than one content type';
+        if (!this._schema || !this._schema.AvailableContentTypeURIs || this._schema.AvailableContentTypeURIs.length === 0)
+            throw '[ContentTypeFactory] Schema must consist of more than one content type';
 
         // Resort to a default uri if no content uri was given
         if (!contentUri)
