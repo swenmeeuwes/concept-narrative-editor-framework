@@ -51,11 +51,14 @@ class ContentTypeNode extends joint.shapes.devs.Model {
   public set ContentModel(newContentModel: ContentModel) {
     this._contentModel = newContentModel;
 
-    let labelText = SchemaHelper.trimRefPath(newContentModel.SchemaId);
-    labelText = TextFormattingUtil.camelToSpaces(labelText);
+    let labelText = this._contentModel.Schema.title;
+    if (!labelText) {
+      const trimmedSchemaId = SchemaHelper.trimRefPath(newContentModel.SchemaId);
+      labelText = TextFormattingUtil.camelToSpaces(trimmedSchemaId);
+    }
+
     this.attr('.label', {
-      text: labelText,
-      fontSize: 12
+      text: labelText
     });
   }
 }
