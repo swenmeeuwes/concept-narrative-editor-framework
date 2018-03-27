@@ -1,6 +1,5 @@
 import ContentSchemaWrapper from './schema/ContentSchemaWrapper';
 import AssetLoader from './assetloading/AssetLoader';
-import ContentTypeNode from './model/ContentTypeNode';
 import SchemaHelper from './schema/SchemaHelper';
 import ContentModel from './model/ContentModel';
 
@@ -13,7 +12,7 @@ class ContentTypeFactory {
         return this._instance || (this._instance = new ContentTypeFactory());
     }
 
-    public createContent(contentSchemaUri?: string): ContentTypeNode {
+    public createContent(contentSchemaUri?: string): ContentModel {
         if (!this._schema || !this._schema.AvailableContentTypeURIs || this._schema.AvailableContentTypeURIs.length === 0)
             throw '[ContentTypeFactory] Schema must consist of more than one content type';
 
@@ -22,8 +21,7 @@ class ContentTypeFactory {
             contentSchemaUri = this._schema.AvailableContentTypeURIs[0];
 
         const schemaData = SchemaHelper.resolveURI(contentSchemaUri, this._schema.FlatSchema);
-        const contentModel = new ContentModel(contentSchemaUri, schemaData);
-        return new ContentTypeNode(contentModel);
+        return new ContentModel(schemaData, {});
     }
 
     public get AvailableContentTypes(): string[] {

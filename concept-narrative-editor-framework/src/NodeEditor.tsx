@@ -7,6 +7,7 @@ import '../node_modules/jointjs/dist/joint.min.css';
 import './NodeEditor.css';
 import ApplicationMenu from './menu/ApplicationMenu';
 import ContentTypeFactory from './ContentTypeFactory';
+import ContentTypeNode from './model/ContentTypeNode';
 
 interface Props { }
 interface State {
@@ -76,7 +77,7 @@ class NodeEditor extends React.Component<Props, State> {
 
   private handleInsert = () => {
     const model = ContentTypeFactory.Instance.createContent();
-    this._graph.addCell(model);
+    this._graph.addCell(new ContentTypeNode(model));
   }
 
   private handleDelete = () => {
