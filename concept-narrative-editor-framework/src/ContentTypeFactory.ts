@@ -19,7 +19,7 @@ class ContentTypeFactory {
 
         // Resort to a default uri if no content uri was given
         if (!contentSchemaUri)
-        contentSchemaUri = this._schema.AvailableContentTypeURIs[0];
+            contentSchemaUri = this._schema.AvailableContentTypeURIs[0];
 
         const schemaData = SchemaHelper.resolveURI(contentSchemaUri, this._schema.FlatSchema);
         const contentModel = new ContentModel(contentSchemaUri, schemaData);
