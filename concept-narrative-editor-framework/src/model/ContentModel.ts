@@ -1,23 +1,28 @@
-class ContentModel {
-    private _schemaId: string;
-    private _data: Object;
+import ContentSchema from '../schema/ContentSchema';
 
-    constructor(schemaId: string, data: Object = {}) {
-        this._schemaId = schemaId;
+class ContentModel {
+    private _schema: ContentSchema;
+    private _data: any;
+
+    constructor(schema: ContentSchema, data: Object = {}) {
+        this._schema = schema;
         this._data = data;
     }
 
-    public get Data() {
+    public get Schema(): ContentSchema {
+        return this._schema;
+    }
+
+    public get Data(): any {
         return this._data;
     }
 
-    public set Data(newData: Object) {
-        // todo: validate newData against json schema
+    public set Data(newData: any) {
         this._data = newData;
     }
 
     public get SchemaId() {
-        return this._schemaId;
+        return this._schema.$id;
     }
 }
 
