@@ -6,7 +6,7 @@ import ContentInspector from './inspector/ContentInspector';
 import '../node_modules/jointjs/dist/joint.min.css';
 import './NodeEditor.css';
 import ApplicationMenu from './menu/ApplicationMenu';
-import ContentTypeFactory from './ContentTypeFactory';
+import ContentTypeFactory from './schema/ContentTypeFactory';
 import ContentTypeNode from './model/ContentTypeNode';
 
 interface Props { }

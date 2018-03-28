@@ -2,11 +2,11 @@ import * as React from 'react';
 import isElectron from 'is-electron';
 
 import NodeEditor from './NodeEditor';
-import AssetLoader from './assetloading/AssetLoader';
+import AssetLoader from './io/AssetLoader';
 
 import './App.css';
-import '../node_modules/bootswatch/dist/superhero/bootstrap.min.css';
 import '../node_modules/font-awesome/css/font-awesome.min.css';
+import '../node_modules/bootswatch/dist/superhero/bootstrap.min.css';
 
 interface State {
   loading: boolean;
@@ -28,8 +28,9 @@ class App extends React.Component<{}, State> {
           loading: false
         });
       })
-      .catch((error) => {
-        throw error;
+      .catch((err) => {
+        alert(`Unable to load json schema. Error: ${err.error.message}`);
+        throw err;
       });
   }
 

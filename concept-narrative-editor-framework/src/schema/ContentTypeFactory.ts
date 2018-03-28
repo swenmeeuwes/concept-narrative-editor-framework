@@ -1,7 +1,7 @@
-import ContentSchemaWrapper from './schema/ContentSchemaWrapper';
-import AssetLoader from './assetloading/AssetLoader';
-import SchemaHelper from './schema/SchemaHelper';
-import ContentModel from './model/ContentModel';
+import ContentSchemaWrapper from '../schema/ContentSchemaWrapper';
+import AssetLoader from '../io/AssetLoader';
+import SchemaHelper from '../schema/SchemaHelper';
+import ContentModel from '../model/ContentModel';
 
 class ContentTypeFactory {
     private static _instance: ContentTypeFactory;

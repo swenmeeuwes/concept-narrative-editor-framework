@@ -4,13 +4,13 @@ import Form, { IChangeEvent } from 'react-jsonschema-form';
 import ContentTypeNode from '../model/ContentTypeNode';
 import ContentSchemaWrapper from '../schema/ContentSchemaWrapper';
 import SchemaHelper from '../schema/SchemaHelper';
-import AssetLoader from '../assetloading/AssetLoader';
+import AssetLoader from '../io/AssetLoader';
 import TextFormattingUtil from '../util/TextFormattingUtil';
 
 import './ContentInspector.css';
 import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import EnumProperty from '../properties/EnumProperty';
-import ContentTypeFactory from '../ContentTypeFactory';
+import ContentTypeFactory from '../schema/ContentTypeFactory';
 
 interface Props {
     selectedNode: joint.dia.CellView | null;
