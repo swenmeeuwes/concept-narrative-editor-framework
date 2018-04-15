@@ -10,7 +10,6 @@ import ContentTypeFactory from './schema/ContentTypeFactory';
 import ContentTypeNode from './model/ContentTypeNode';
 import TriggerSystemNodeBuilder from './formalism/triggersystem/TriggerSystemNodeBuilder';
 import TriggerSystemDirector from './formalism/triggersystem/TriggerSystemDirector';
-import TriggerSystemNode from './formalism/triggersystem/TriggerSystemNode';
 // import StateMachineNodeBuilder from './formalism/statemachine/StateMachineNodeBuilder';
 // import StateMachineDirector from './formalism/statemachine/StateMachineDirector';
 
@@ -44,15 +43,12 @@ class NodeEditor extends React.Component<Props, State> {
       // const director = new StateMachineDirector(nodeBuilder);
       const availableNodes = director.construct();
 
-      for (let i = 0; i < 4; i++) {
-        for (let j = 0; j < availableNodes.length; j++) {
-          const node = availableNodes[j].cloneDeep(TriggerSystemNode);
-          node.position(16 + 116 * j, 16 + 116 * i);
+      for (let j = 0; j < availableNodes.length; j++) {
+        const node = availableNodes[j];
+        node.position(16 + 116 * (j % 4), 16 + 116 * Math.floor(j / 4));
 
-          this._graph.addCell(node);
-        }
+        this._graph.addCell(node);
       }
-      //
     }, 100);
   }
 
@@ -76,12 +72,27 @@ class NodeEditor extends React.Component<Props, State> {
     if (this.state.selectedNode !== null)
       this.state.selectedNode.unhighlight();
 
-    if (cellView !== null)
-      cellView.highlight();
+    if (!cellView)
+      return;
+
+    cellView.highlight();
 
     this.setState({
       selectedNode: cellView
     });
+
+    // TEST
+    const selectedCell = cellView.model;
+    if (selectedCell !== undefined) {
+      const startElement = selectedCell.isElement() ? selectedCell as joint.dia.Element : undefined;
+
+      if (startElement !== undefined)
+        this._graph.bfs(startElement,
+          (visitedElement, distance) => {
+            console.log(visitedElement, distance, visitedElement.getPorts()); return true;
+          },
+          { outbound: true });
+    }
   }
 
   render() {
