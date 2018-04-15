@@ -1,16 +1,17 @@
 import * as React from 'react';
 import Form, { IChangeEvent } from 'react-jsonschema-form';
 
-import ContentTypeNode from '../model/ContentTypeNode';
+import ContentNode from '../formalism/triggersystem/syntax/ContentNode';
 import ContentSchemaWrapper from '../schema/ContentSchemaWrapper';
 import SchemaHelper from '../schema/SchemaHelper';
 import AssetLoader from '../io/AssetLoader';
 import TextFormattingUtil from '../util/TextFormattingUtil';
 
-import './ContentInspector.css';
-import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import EnumProperty from '../properties/EnumProperty';
 import ContentTypeFactory from '../schema/ContentTypeFactory';
+
+import './ContentInspector.css';
+import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
 interface Props {
     selectedNode: joint.dia.CellView | null;
@@ -40,17 +41,17 @@ class ContentInspector extends React.Component<Props, State> {
         };
     }
 
-    componentWillReceiveProps(nextProps: Props) {
-        if (nextProps.selectedNode === null) {
+    componentWillReceiveProps(nextProps: Props) {        
+        if (nextProps.selectedNode === null || !(nextProps.selectedNode.model instanceof ContentNode)) {
             this.clear();
             return;
         }
 
         const selectedNode = nextProps.selectedNode;
-        const contentTypeNode = selectedNode.model as ContentTypeNode;
+        const contentTypeNode = selectedNode.model as ContentNode;
 
         const contentModel = contentTypeNode.ContentModel;
-        if (contentModel === undefined)
+        if (!contentModel)
             return;
 
         const contentTypeExists = SchemaHelper.contentTypeExists(contentModel.SchemaId, this._contentSchemaWrapper.Schema);
@@ -74,7 +75,7 @@ class ContentInspector extends React.Component<Props, State> {
         if (this.state.selectedNode === null)
             return (<div />);
 
-        const contentTypeNode = this.state.selectedNode.model as ContentTypeNode;
+        const contentTypeNode = this.state.selectedNode.model as ContentNode;
         const contentType = SchemaHelper.trimRefPath(contentTypeNode.ContentModel.SchemaId);
         
         return (
@@ -101,7 +102,7 @@ class ContentInspector extends React.Component<Props, State> {
 
     private onContentDataValueChanged = (event: IChangeEvent) => {
         if (this.state.selectedNode !== null) {
-            const contentTypeNode = this.state.selectedNode.model as ContentTypeNode;
+            const contentTypeNode = this.state.selectedNode.model as ContentNode;
             contentTypeNode.ContentModel.Data = event.formData;
         }
     }
@@ -109,7 +110,7 @@ class ContentInspector extends React.Component<Props, State> {
     private onContentDataSubmit = (formData: FormData) => {
         // Might be overkill, since it is already set in onValueChanged ...
         if (this.state.selectedNode !== null) {
-            const contentTypeNode = this.state.selectedNode.model as ContentTypeNode;
+            const contentTypeNode = this.state.selectedNode.model as ContentNode;
             contentTypeNode.ContentModel.Data = formData;
         }
 
@@ -129,7 +130,7 @@ class ContentInspector extends React.Component<Props, State> {
         if (!this.state.selectedNode)
             return;
 
-        const contentTypeNode = this.state.selectedNode.model as ContentTypeNode;
+        const contentTypeNode = this.state.selectedNode.model as ContentNode;
         contentTypeNode.ContentModel = ContentTypeFactory.Instance.createContent(SchemaHelper.padContentTypeDefinition(selectedValue));
 
         const contentModel = contentTypeNode.ContentModel;
