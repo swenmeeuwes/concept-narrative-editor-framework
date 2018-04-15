@@ -8,6 +8,11 @@ import './NodeEditor.css';
 import ApplicationMenu from './menu/ApplicationMenu';
 import ContentTypeFactory from './schema/ContentTypeFactory';
 import ContentTypeNode from './model/ContentTypeNode';
+import TriggerSystemNodeBuilder from './formalism/triggersystem/TriggerSystemNodeBuilder';
+import TriggerSystemDirector from './formalism/triggersystem/TriggerSystemDirector';
+import TriggerSystemNode from './formalism/triggersystem/TriggerSystemNode';
+// import StateMachineNodeBuilder from './formalism/statemachine/StateMachineNodeBuilder';
+// import StateMachineDirector from './formalism/statemachine/StateMachineDirector';
 
 interface Props { }
 interface State {
@@ -30,6 +35,25 @@ class NodeEditor extends React.Component<Props, State> {
     // hack ;c
     ApplicationMenu.Instance.handleInsert = this.handleInsert;
     ApplicationMenu.Instance.handleDelete = this.handleDelete;
+
+    setTimeout(() => {
+      // Test 
+      const nodeBuilder = new TriggerSystemNodeBuilder();
+      const director = new TriggerSystemDirector(nodeBuilder);
+      // const nodeBuilder = new StateMachineNodeBuilder();
+      // const director = new StateMachineDirector(nodeBuilder);
+      const availableNodes = director.construct();
+
+      for (let i = 0; i < 4; i++) {
+        for (let j = 0; j < availableNodes.length; j++) {
+          const node = availableNodes[j].cloneDeep(TriggerSystemNode);
+          node.position(16 + 116 * j, 16 + 116 * i);
+
+          this._graph.addCell(node);
+        }
+      }
+      //
+    }, 100);
   }
 
   public get Canvas(): NodeEditorCanvas {

@@ -4,13 +4,14 @@ import SchemaHelper from '../schema/SchemaHelper';
 import TextFormattingUtil from '../util/TextFormattingUtil';
 
 import './ContentTypeNode.css';
+import Node from '../formalism/base/Node';
 
 // Is more like a mediator between the joint view and content model
 // class ContentTypeNode extends joint.shapes.devs.Model.extend({
 //   markup: '<g class="rotatable"><g class="scalable"><rect/></g><text/></g>'
 // })
 
-class ContentTypeNode extends joint.shapes.devs.Model {
+class ContentTypeNode extends Node {
   private _contentModel: ContentModel;
 
   constructor(contentModel: ContentModel, attributes?: joint.shapes.devs.ModelAttributes) {

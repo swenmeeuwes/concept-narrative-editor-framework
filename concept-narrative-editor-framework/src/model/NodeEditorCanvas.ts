@@ -1,6 +1,6 @@
 import * as joint from 'jointjs';
 import * as SvgPanZoom from 'svg-pan-zoom';
-import ContentTypeNode from '../model/ContentTypeNode';
+import Node from '../formalism/base/Node';
 
 // Functions definitions
 type OnNodeSelected = (cellView: joint.dia.CellView | null) => void;
@@ -73,7 +73,7 @@ class NodeEditorCanvas {
     }
 
     private onNodeSelected = (cellView: joint.dia.CellView) => {
-        if (cellView.model instanceof ContentTypeNode)
+        if (cellView.model instanceof Node)
             this._props.onNodeSelected(cellView);
         else
             this._props.onNodeSelected(null);
@@ -95,8 +95,20 @@ class NodeEditorCanvas {
 
     private validateConnection(sourceView: joint.dia.CellView, sourceMagnet: SVGElement,
         targetView: joint.dia.CellView, targetMagnet: SVGElement) {
-        return sourceView !== targetView && sourceMagnet !== targetMagnet
-            && sourceMagnet.getAttribute('port') !== targetMagnet.getAttribute('port');
+        return (
+            // cannot connect to same view
+            sourceView !== targetView
+
+            // cannot connect to same port
+            && sourceMagnet !== targetMagnet
+
+            // cannot connect to same groups (in ports cannot connect to other in ports)
+            && sourceMagnet.getAttribute('port-group') !== targetMagnet.getAttribute('port-group')
+            // todo: evaluate constraints
+            // e.g. sourceView.model(oftype Node).canConnect(targetView)
+            // or on magnet level
+            && sourceMagnet.getAttribute('port') !== targetMagnet.getAttribute('port')
+        );
     }
 }
 
