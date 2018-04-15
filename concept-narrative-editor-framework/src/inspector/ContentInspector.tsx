@@ -53,7 +53,7 @@ class ContentInspector extends React.Component<Props, State> {
         if (contentModel === undefined)
             return;
 
-        const contentTypeExists = this._contentSchemaWrapper.Schema.contentTypes.hasOwnProperty(SchemaHelper.trimRefPath(contentModel.SchemaId));
+        const contentTypeExists = SchemaHelper.contentTypeExists(contentModel.SchemaId, this._contentSchemaWrapper.Schema);
         if (!contentTypeExists) {
             this.setState({
                 currentSchema: {},
