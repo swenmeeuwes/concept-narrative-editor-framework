@@ -5,6 +5,7 @@ import BoolNode from './syntax/BoolNode';
 import LogicalExpressionNode from './syntax/LogicalExpressionNode';
 import { BoolValue } from '../base/syntax/Values';
 import { Not, Or, And } from '../base/syntax/LogicalExpressions';
+import { AvailableConditionPort, UnlockedPort, UnlockPort, AvailablePort, CompletedPort, LogicalOutPort, LogicalInPort, DelayInPort, DelayOutPort } from './TriggerSystemPorts';
 
 class TriggerSystemDirector extends NodeDirector<TriggerSystemNode> {
     public construct(): TriggerSystemNode[] {
@@ -24,11 +25,11 @@ class TriggerSystemDirector extends NodeDirector<TriggerSystemNode> {
         return this._builder
             .build(ContentNode)
             .label('Content Node')
-            .addInPort('unlock')
-            .addInPort('availableCondition')
-            .addOutPort('unlocked')
-            .addOutPort('available')
-            .addOutPort('completed')
+            .addPort(UnlockPort)
+            .addPort(AvailableConditionPort)
+            .addPort(UnlockedPort)
+            .addPort(AvailablePort)
+            .addPort(CompletedPort)
             .getNode<ContentNode>();
     }
 
@@ -36,7 +37,7 @@ class TriggerSystemDirector extends NodeDirector<TriggerSystemNode> {
         const node = this._builder
             .build(LogicalExpressionNode)
             .label('Logical Expression')
-            .addOutPort('out')
+            .addPort(LogicalOutPort)            
             .getNode<LogicalExpressionNode>();
 
         return node;
@@ -46,9 +47,9 @@ class TriggerSystemDirector extends NodeDirector<TriggerSystemNode> {
         const node = this._builder
             .build(LogicalExpressionNode)
             .label('AND')
-            .addInPort('x')
-            .addInPort('y')
-            .addOutPort('out')
+            .addPort(LogicalInPort)
+            .addPort(LogicalInPort)
+            .addPort(LogicalOutPort)
             .getNode<LogicalExpressionNode>();
 
         node.expression = new And(new BoolValue(false), new BoolValue(false)); // todo: work this out, do we really need a default value?
@@ -60,9 +61,9 @@ class TriggerSystemDirector extends NodeDirector<TriggerSystemNode> {
         const node = this._builder
             .build(LogicalExpressionNode)
             .label('OR')
-            .addInPort('x')
-            .addInPort('y')
-            .addOutPort('out')
+            .addPort(LogicalInPort)
+            .addPort(LogicalInPort)
+            .addPort(LogicalOutPort)
             .getNode<LogicalExpressionNode>();
 
         node.expression = new Or(new BoolValue(false), new BoolValue(false)); // todo: work this out, do we really need a default value?
@@ -74,8 +75,8 @@ class TriggerSystemDirector extends NodeDirector<TriggerSystemNode> {
         const node = this._builder
             .build(LogicalExpressionNode)
             .label('NOT')
-            .addInPort('x')
-            .addOutPort('out')
+            .addPort(LogicalInPort)
+            .addPort(LogicalOutPort)
             .getNode<LogicalExpressionNode>();
 
         node.expression = new Not(new BoolValue(false)); // todo: work this out, do we really need a default value?
@@ -87,7 +88,7 @@ class TriggerSystemDirector extends NodeDirector<TriggerSystemNode> {
         const node = this._builder
             .build(BoolNode)
             .label('True')
-            .addOutPort('out')
+            .addPort(LogicalOutPort)
             .getNode<BoolNode>();
 
         node.value = new BoolValue(true);
@@ -99,7 +100,7 @@ class TriggerSystemDirector extends NodeDirector<TriggerSystemNode> {
         const node = this._builder
             .build(BoolNode)
             .label('False')
-            .addOutPort('out')
+            .addPort(LogicalOutPort)
             .getNode<BoolNode>();
 
         node.value = new BoolValue(false);
@@ -111,8 +112,8 @@ class TriggerSystemDirector extends NodeDirector<TriggerSystemNode> {
         return this._builder
             .build(TriggerSystemNode)
             .label('Delay')
-            .addInPort('in')
-            .addOutPort('out')
+            .addPort(DelayInPort)
+            .addPort(DelayOutPort)
             .getNode();
     }
 }

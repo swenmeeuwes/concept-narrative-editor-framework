@@ -30,19 +30,19 @@ abstract class NodeBuilder {
         return this;
     }
 
-    // public addPort(port: joint.dia.Element.Port, options?: any): this {
-    //     this._node.addPort(port, options);
-    //     return this;
-    // }
+    public addPort(port: any, options?: any): this {
+        this._node.addPort(port, options);
+        return this;
+    }
     
     // todo: Remove port semantics ... want to use method above
     public addInPort(port: string) {
-        this._node.addInPort(port);
+        // this._node.addInPort(port);
         return this;
     }
 
     public addOutPort(port: string) {
-        this._node.addOutPort(port);
+        // this._node.addOutPort(port);
         return this;
     }
 
