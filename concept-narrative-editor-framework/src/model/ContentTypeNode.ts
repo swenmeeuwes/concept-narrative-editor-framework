@@ -52,9 +52,9 @@ class ContentTypeNode extends Node {
   public set ContentModel(newContentModel: ContentModel) {
     this._contentModel = newContentModel;
 
-    let labelText = this._contentModel.Schema.title;
+    let labelText = this._contentModel.schema.title;
     if (!labelText) {
-      const trimmedSchemaId = SchemaHelper.trimRefPath(newContentModel.SchemaId);
+      const trimmedSchemaId = SchemaHelper.trimRefPath(newContentModel.schemaId);
       labelText = TextFormattingUtil.camelToSpaces(trimmedSchemaId);
     }
 

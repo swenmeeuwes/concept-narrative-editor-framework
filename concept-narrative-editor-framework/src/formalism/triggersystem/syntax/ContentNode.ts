@@ -13,16 +13,16 @@ class ContentNode extends TriggerSystemNode {
         this._contentModel = ContentTypeFactory.Instance.createContent();
     }
 
-    public get ContentModel() {
+    public get contentModel() {
         return this._contentModel;
     }
 
-    public set ContentModel(newContentModel: ContentModel) {
+    public set contentModel(newContentModel: ContentModel) {
         this._contentModel = newContentModel;
 
-        let labelText = this._contentModel.Schema.title;
+        let labelText = this._contentModel.schema.title;
         if (!labelText) {
-            const trimmedSchemaId = SchemaHelper.trimRefPath(newContentModel.SchemaId);
+            const trimmedSchemaId = SchemaHelper.trimRefPath(newContentModel.schemaId);
             labelText = TextFormattingUtil.camelToSpaces(trimmedSchemaId);
         }
 

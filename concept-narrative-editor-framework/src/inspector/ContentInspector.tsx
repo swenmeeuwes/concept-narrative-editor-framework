@@ -50,11 +50,11 @@ class ContentInspector extends React.Component<Props, State> {
         const selectedNode = nextProps.selectedNode;
         const contentTypeNode = selectedNode.model as ContentNode;
 
-        const contentModel = contentTypeNode.ContentModel;
+        const contentModel = contentTypeNode.contentModel;
         if (!contentModel)
             return;
 
-        const contentTypeExists = SchemaHelper.contentTypeExists(contentModel.SchemaId, this._contentSchemaWrapper.Schema);
+        const contentTypeExists = SchemaHelper.contentTypeExists(contentModel.schemaId, this._contentSchemaWrapper.Schema);
         if (!contentTypeExists) {
             this.setState({
                 currentSchema: {},
@@ -65,9 +65,9 @@ class ContentInspector extends React.Component<Props, State> {
 
         this.setState({
             selectedNode: selectedNode,
-            currentSchema: SchemaHelper.resolveURI(contentModel.SchemaId, this._contentSchemaWrapper.FlatSchema),
-            title: TextFormattingUtil.camelToSpaces(SchemaHelper.trimRefPath(contentModel.SchemaId)),
-            formData: contentModel.Data
+            currentSchema: SchemaHelper.resolveURI(contentModel.schemaId, this._contentSchemaWrapper.FlatSchema),
+            title: TextFormattingUtil.camelToSpaces(SchemaHelper.trimRefPath(contentModel.schemaId)),
+            formData: contentModel.data
         });
     }
 
@@ -76,7 +76,7 @@ class ContentInspector extends React.Component<Props, State> {
             return (<div />);
 
         const contentTypeNode = this.state.selectedNode.model as ContentNode;
-        const contentType = SchemaHelper.trimRefPath(contentTypeNode.ContentModel.SchemaId);
+        const contentType = SchemaHelper.trimRefPath(contentTypeNode.contentModel.schemaId);
         
         return (
             <div id="inspectorEditWindow">
@@ -103,7 +103,7 @@ class ContentInspector extends React.Component<Props, State> {
     private onContentDataValueChanged = (event: IChangeEvent) => {
         if (this.state.selectedNode !== null) {
             const contentTypeNode = this.state.selectedNode.model as ContentNode;
-            contentTypeNode.ContentModel.Data = event.formData;
+            contentTypeNode.contentModel.data = event.formData;
         }
     }
 
@@ -111,7 +111,7 @@ class ContentInspector extends React.Component<Props, State> {
         // Might be overkill, since it is already set in onValueChanged ...
         if (this.state.selectedNode !== null) {
             const contentTypeNode = this.state.selectedNode.model as ContentNode;
-            contentTypeNode.ContentModel.Data = formData;
+            contentTypeNode.contentModel.data = formData;
         }
 
         if (this.state.selectedNode !== null)
@@ -131,13 +131,13 @@ class ContentInspector extends React.Component<Props, State> {
             return;
 
         const contentTypeNode = this.state.selectedNode.model as ContentNode;
-        contentTypeNode.ContentModel = ContentTypeFactory.Instance.createContent(SchemaHelper.padContentTypeDefinition(selectedValue));
+        contentTypeNode.contentModel = ContentTypeFactory.Instance.createContent(SchemaHelper.padContentTypeDefinition(selectedValue));
 
-        const contentModel = contentTypeNode.ContentModel;
+        const contentModel = contentTypeNode.contentModel;
         this.setState({
-            currentSchema: SchemaHelper.resolveURI(contentModel.SchemaId, this._contentSchemaWrapper.FlatSchema),
-            title: TextFormattingUtil.camelToSpaces(SchemaHelper.trimRefPath(contentModel.SchemaId)),
-            formData: contentModel.Data
+            currentSchema: SchemaHelper.resolveURI(contentModel.schemaId, this._contentSchemaWrapper.FlatSchema),
+            title: TextFormattingUtil.camelToSpaces(SchemaHelper.trimRefPath(contentModel.schemaId)),
+            formData: contentModel.data
         });
     }
 

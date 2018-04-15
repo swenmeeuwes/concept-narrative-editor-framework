@@ -9,19 +9,19 @@ class ContentModel {
         this._data = data;
     }
 
-    public get Schema(): ContentSchema {
+    public get schema(): ContentSchema {
         return this._schema;
     }
 
-    public get Data(): any {
+    public get data(): any {
         return this._data;
     }
 
-    public set Data(newData: any) {
+    public set data(newData: any) {
         this._data = newData;
     }
 
-    public get SchemaId() {
+    public get schemaId() {
         return this._schema.$id;
     }
 }
