@@ -10,6 +10,16 @@
     stroke-width: 4px;
 } */
 
+/* port styling */
+.available-magnet {
+    fill: rgb(255, 187, 0);
+}
+
+/* element styling */
+/* .available-cell rect {
+    stroke-dasharray: 5, 2;
+} */
+
 .content-type-node .body {
     stroke-width: 4;
     stroke: rgb(223, 105, 26);

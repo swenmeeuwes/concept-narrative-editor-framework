@@ -35,7 +35,8 @@ class NodeEditorCanvas {
             linkPinning: false,
             defaultLink: defaultLink,
             defaultRouter: { name: 'manhattan' },
-            validateConnection: this.validateConnection
+            validateConnection: this.validateConnection,
+            markAvailable: true
         });
 
         this._panZoomInstance = SvgPanZoom(`#${props.container.id} svg`, {
