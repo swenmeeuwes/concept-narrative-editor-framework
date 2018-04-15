@@ -1,12 +1,15 @@
 import TriggerSystemNode from './TriggerSystemNode';
 import NodeDirector from '../base/NodeDirector';
 import ContentNode from './syntax/ContentNode';
-import AndGate from './syntax/AndGate';
+import BoolNode from './syntax/BoolNode';
+import LogicalExpressionNode from './syntax/LogicalExpressionNode';
+import { BoolValue } from '../base/syntax/Values';
+import { Not, Or, And } from '../base/syntax/LogicalExpressions';
 
 class TriggerSystemDirector extends NodeDirector<TriggerSystemNode> {
     public construct(): TriggerSystemNode[] {
         return [
-            this.contentNode(),    
+            this.contentNode(),
             this.andGate(),
             this.orGate(),
             this.notGate(),
@@ -17,7 +20,7 @@ class TriggerSystemDirector extends NodeDirector<TriggerSystemNode> {
         ];
     }
 
-    private contentNode(): TriggerSystemNode {
+    private contentNode(): ContentNode {
         return this._builder
             .build(ContentNode)
             .label('Content Node')
@@ -26,60 +29,82 @@ class TriggerSystemDirector extends NodeDirector<TriggerSystemNode> {
             .addOutPort('unlocked')
             .addOutPort('available')
             .addOutPort('completed')
-            .getNode();
+            .getNode<ContentNode>();
     }
 
-    private logicalExpression(): TriggerSystemNode {
-        return this._builder
-            .build(TriggerSystemNode)
+    private logicalExpression(): LogicalExpressionNode {
+        const node = this._builder
+            .build(LogicalExpressionNode)
             .label('Logical Expression')
             .addOutPort('out')
-            .getNode();
+            .getNode<LogicalExpressionNode>();
+
+        return node;
     }
 
-    private andGate(): TriggerSystemNode {
-        return this._builder
-            .build(AndGate)
+    private andGate(): LogicalExpressionNode {
+        const node = this._builder
+            .build(LogicalExpressionNode)
             .label('AND')
             .addInPort('x')
             .addInPort('y')
             .addOutPort('out')
-            .getNode();
+            .getNode<LogicalExpressionNode>();
+
+        node.expression = new And(new BoolValue(false), new BoolValue(false)); // todo: work this out, do we really need a default value?
+
+        return node;
     }
 
-    private orGate(): TriggerSystemNode {
-        return this._builder
-            .build(TriggerSystemNode)
+    private orGate(): LogicalExpressionNode {
+        const node = this._builder
+            .build(LogicalExpressionNode)
             .label('OR')
             .addInPort('x')
             .addInPort('y')
             .addOutPort('out')
-            .getNode();
+            .getNode<LogicalExpressionNode>();
+
+        node.expression = new Or(new BoolValue(false), new BoolValue(false)); // todo: work this out, do we really need a default value?
+
+        return node;
     }
 
-    private notGate(): TriggerSystemNode {
-        return this._builder
-            .build(TriggerSystemNode)
+    private notGate(): LogicalExpressionNode {
+        const node = this._builder
+            .build(LogicalExpressionNode)
             .label('NOT')
             .addInPort('x')
             .addOutPort('out')
-            .getNode();
+            .getNode<LogicalExpressionNode>();
+
+        node.expression = new Not(new BoolValue(false)); // todo: work this out, do we really need a default value?
+
+        return node;
     }
 
-    private true(): TriggerSystemNode {
-        return this._builder
-            .build(TriggerSystemNode)
+    private true(): BoolNode {
+        const node = this._builder
+            .build(BoolNode)
             .label('True')
             .addOutPort('out')
-            .getNode();
+            .getNode<BoolNode>();
+
+        node.value = new BoolValue(true);
+
+        return node;
     }
 
-    private false(): TriggerSystemNode {
-        return this._builder
-            .build(TriggerSystemNode)
+    private false(): BoolNode {
+        const node = this._builder
+            .build(BoolNode)
             .label('False')
             .addOutPort('out')
-            .getNode();
+            .getNode<BoolNode>();
+
+        node.value = new BoolValue(false);
+
+        return node;
     }
 
     private delay(): TriggerSystemNode {

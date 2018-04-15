@@ -1,36 +1,36 @@
 import Node from './Node';
 import EmptyConstructor from './EmptyConstructor';
 
-abstract class NodeBuilder<T extends Node> {
-    private _node: T;
+abstract class NodeBuilder {
+    private _node: Node;
 
     // constructor(nodeType: EmptyConstructor<T>) {
     //     this._node = new nodeType();
     // }
 
-    public build(nodeType: EmptyConstructor<T>): NodeBuilder<T> {
+    public build<T extends Node>(nodeType: EmptyConstructor<T>) {
         this._node = new nodeType();
         return this;
     }
 
-    public markup(markup: string): NodeBuilder<T> {
+    public markup(markup: string) {
         this._node.set('markup', markup);
         return this;
     }
 
-    public label(label: string): NodeBuilder<T> {
+    public label(label: string) {
         this._node.attr('.label', {
             text: label
         });
         return this;
     }
 
-    public allowBodyConnections(allow: boolean = true): NodeBuilder<T> {
+    public allowBodyConnections(allow: boolean = true) {
         this._node.attr('.', { magnet: allow });
         return this;
     }
 
-    // public addPort(port: joint.dia.Element.Port, options?: any): NodeBuilder<T> {
+    // public addPort(port: joint.dia.Element.Port, options?: any): this {
     //     this._node.addPort(port, options);
     //     return this;
     // }
@@ -46,8 +46,8 @@ abstract class NodeBuilder<T extends Node> {
         return this;
     }
 
-    public getNode(): T {
-        return this._node;
+    public getNode<T extends Node>(): T {
+        return this._node as T;
     }
 }
 
