@@ -37,9 +37,9 @@
     stroke: rgb(223, 105, 26);    
 }
 
-.port-label {
+/* .port-label {
     display: none;
-}
+} */
 
 .connection {
     stroke: rgb(78, 93, 108);
