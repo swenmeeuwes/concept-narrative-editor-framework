@@ -98,14 +98,24 @@ class NodeEditorCanvas {
     private validateConnection(sourceView: joint.dia.CellView, sourceMagnet: SVGElement,
         targetView: joint.dia.CellView, targetMagnet: SVGElement) {
 
-        // Check if both magnets have a port group assigned
+        const portGroupsDictionary = sourceView.model.attributes.ports.groups as { [key: string]: CustomPortGroup };
+        const portGroups = Object.keys(portGroupsDictionary);
         const sourceMagnetGroup = sourceMagnet.getAttribute('port-group');
+
+        if (!targetMagnet) { // Allow connecting to cells instead of magnets
+            if (!sourceMagnetGroup || portGroups.indexOf(sourceMagnetGroup) === -1)
+                return false;
+
+            return (
+                sourceView !== targetView && // disallow loops
+                portGroupsDictionary[sourceMagnetGroup].validateConnection(targetView)
+            );
+        }
+
+        // Check if both magnets have a port group assigned
         const targetMagnetGroup = targetMagnet.getAttribute('port-group');
         if (!sourceMagnetGroup || !targetMagnetGroup)
             return false;
-
-        const portGroupsDictionary = sourceView.model.attributes.ports.groups as { [key: string]: CustomPortGroup };
-        const portGroups = Object.keys(portGroupsDictionary);
 
         // Check if both port groups exist
         if (portGroups.indexOf(sourceMagnetGroup) === -1 || portGroups.indexOf(targetMagnetGroup) === -1)
@@ -113,14 +123,14 @@ class NodeEditorCanvas {
 
         return (
             // cannot connect to same view
-            sourceView !== targetView
+            sourceView !== targetView &&
 
             // cannot connect to same port
-            && sourceMagnet !== targetMagnet
-            && sourceMagnet.getAttribute('port') !== targetMagnet.getAttribute('port')
+            sourceMagnet !== targetMagnet &&
+            sourceMagnet.getAttribute('port') !== targetMagnet.getAttribute('port') &&
 
             // evaluate group constraints
-            && portGroupsDictionary[sourceMagnetGroup].validateConnection(targetMagnet)
+            portGroupsDictionary[sourceMagnetGroup].validateConnection(targetMagnet)
         );
     }
 }
