@@ -1,45 +1,45 @@
 const UnlockPort = {
-    name: 'unlock',
+    label: 'unlock',
     group: 'in'
 };
 
 const AvailableConditionPort = {
-    name: 'available',
+    label: 'available',
     group: 'in'
 };
 
 const UnlockedPort = {
-    name: 'unlocked',
+    label: 'unlocked',
     group: 'out'
 };
 
 const AvailablePort = {
-    name: 'available',
+    label: 'available',
     group: 'out'
 };
 
 const CompletedPort = {
-    name: 'completed',
+    label: 'completed',
     group: 'out'
 };
 
 const LogicalInPort = {
-    name: 'logical in',
+    label: 'logical in',
     group: 'in'
 };
 
 const LogicalOutPort = {
-    name: 'logical out',
+    label: 'logical out',
     group: 'out'
 };
 
 const DelayInPort = {
-    name: 'delay in',
+    label: 'delay in',
     group: 'in'
 };
 
 const DelayOutPort = {
-    name: 'delay out',
+    label: 'delay out',
     group: 'out'
 };
 
