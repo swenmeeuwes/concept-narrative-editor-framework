@@ -6,8 +6,6 @@ import ContentInspector from './inspector/ContentInspector';
 import '../node_modules/jointjs/dist/joint.min.css';
 import './NodeEditor.css';
 import ApplicationMenu from './menu/ApplicationMenu';
-import ContentTypeFactory from './schema/ContentTypeFactory';
-import ContentTypeNode from './model/ContentTypeNode';
 import TriggerSystemNodeBuilder from './formalism/triggersystem/TriggerSystemNodeBuilder';
 import TriggerSystemDirector from './formalism/triggersystem/TriggerSystemDirector';
 import TriggerSystemExportGeneratingVisitor from './formalism/triggersystem/TriggerSystemExportGeneratingVisitor';
@@ -119,8 +117,7 @@ class NodeEditor extends React.Component<Props, State> {
   }
 
   private handleInsert = () => {
-    const model = ContentTypeFactory.Instance.createContent();
-    this._graph.addCell(new ContentTypeNode(model));
+    this._graph.addCell(new TriggerSystemDirector(new TriggerSystemNodeBuilder()).construct()[0]);
   }
 
   private handleDelete = () => {
