@@ -21,11 +21,18 @@ class TriggerSystemNode extends Node {
                         }
                     },
                     markup: '<circle class="port-body" r="10" />', // r = radius of the circle,
-                    validateConnection: (otherPort: SVGElement): boolean => {
+                    validateConnection: (other: SVGElement | joint.dia.CellView): boolean => {
                         const allowConnectionsTo = ['out'];
-                        const otherPortGroup = otherPort.getAttribute('port-group');
+                        if (other instanceof SVGElement) {
+                            const otherPortGroup = other.getAttribute('port-group');
+                            return _.includes(allowConnectionsTo, otherPortGroup);
+                        }
 
-                        return _.includes(allowConnectionsTo, otherPortGroup);
+                        if (other instanceof joint.dia.CellView) {
+                            return true;
+                        }
+
+                        return false;
                     }
                 },
                 'out': {
@@ -40,11 +47,18 @@ class TriggerSystemNode extends Node {
                         }
                     },
                     markup: '<circle class="port-body" r="10" />', // r = radius of the circle
-                    validateConnection: (otherPort: SVGElement): boolean => {
+                    validateConnection: (other: SVGElement | joint.dia.CellView): boolean => {
                         const allowConnectionsTo = ['in'];
-                        const otherPortGroup = otherPort.getAttribute('port-group');
+                        if (other instanceof SVGElement) {
+                            const otherPortGroup = other.getAttribute('port-group');
+                            return _.includes(allowConnectionsTo, otherPortGroup);
+                        }
 
-                        return _.includes(allowConnectionsTo, otherPortGroup);
+                        if (other instanceof joint.dia.CellView) {
+                            return true;
+                        }
+
+                        return false;
                     }
                 }
             }
