@@ -5,7 +5,11 @@ import BoolNode from './syntax/BoolNode';
 import LogicalExpressionNode from './syntax/LogicalExpressionNode';
 import { BoolValue } from '../base/syntax/Values';
 import { Not, Or, And } from '../base/syntax/LogicalExpressions';
-import { AvailableConditionPort, UnlockedPort, UnlockPort, AvailablePort, CompletedPort, LogicalOutPort, LogicalInPort, DelayInPort, DelayOutPort } from './TriggerSystemPorts';
+import {
+    AvailableConditionPort, UnlockedPort, UnlockPort,
+    AvailablePort, CompletedPort, LogicalOutPort,
+    LogicalInPort, DelayInPort, DelayOutPort
+} from './TriggerSystemPorts';
 
 class TriggerSystemDirector extends NodeDirector<TriggerSystemNode> {
     public construct(): TriggerSystemNode[] {
@@ -37,7 +41,7 @@ class TriggerSystemDirector extends NodeDirector<TriggerSystemNode> {
         const node = this._builder
             .build(LogicalExpressionNode)
             .label('Logical Expression')
-            .addPort(LogicalOutPort)            
+            .addPort(LogicalOutPort)
             .getNode<LogicalExpressionNode>();
 
         return node;
