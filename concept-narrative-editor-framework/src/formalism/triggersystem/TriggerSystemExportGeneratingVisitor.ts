@@ -5,8 +5,9 @@ import ExportGeneratingVisitor from '../base/ExportGeneratingVisitor';
 import Node from '../base/Node';
 import ContentNode from './syntax/ContentNode';
 import { TriggerSystemExport, StoryNode } from '../base/StoryExport';
-import { UnlockPort, LogicalOutPort } from './TriggerSystemPorts';
+import { UnlockPort, LogicalOutPort, AvailableConditionPort } from './TriggerSystemPorts';
 import BoolNode from './syntax/BoolNode';
+import CustomPort from '../base/CustomPort';
 
 class TriggerSystemExportGeneratingVisitor implements ExportGeneratingVisitor<TriggerSystemExport> {
     private _graph: joint.dia.Graph;
@@ -33,7 +34,7 @@ class TriggerSystemExportGeneratingVisitor implements ExportGeneratingVisitor<Tr
         };
     }
 
-    // Typescript y u no support method overloading
+    // Typescript y u no support method overloading ლ(ಠ益ಠლ)
     public visit(node: Node) {
         if (node instanceof ContentNode) {
             if (this.nodeExistsInExport(node.id.toString()))
@@ -47,15 +48,46 @@ class TriggerSystemExportGeneratingVisitor implements ExportGeneratingVisitor<Tr
                 isRetained: node.contentModel.data.retained,
                 metadata: null,
                 isEnd: false,
-                unlockCondition: _.find(node.getPorts(), port => port.label === UnlockPort.label)
+                unlockCondition: null
             });
+
+            // Handle out ports
+            const outgoingUnlockedLinks = this._graph.getConnectedLinks(node, { outbound: true });
+            outgoingUnlockedLinks.forEach(link => {
+                const target = link.get('target');
+                if (!target)
+                    return;
+
+                const source = link.get('source');
+                const sourcePort = node.getPort(source.port) as CustomPort;
+                const targetCell = this._graph.getCell(target.id) as Node;
+                const targetPort = targetCell.getPort(target.port) as CustomPort;
+
+                // Visit targetCell so we can values later
+                this.visit(targetCell);
+
+                const exportNode = this.findNodeInExport(target.id);
+                if (!exportNode)
+                    return;
+
+                switch (targetPort.type) {
+                    case UnlockPort.type:
+                        exportNode.unlockCondition = `${node.id}_${sourcePort.type}`;
+                        break;
+                    case AvailableConditionPort.type:
+                        exportNode.availableCondition = `${node.id}_${sourcePort.type}`;
+                        break;
+                    default:
+                        console.warn(`[TriggerSystemExportGeneratingVisitor] Could not compile ${targetPort.type}`);
+                        break;
+                }
+            });
+
             return;
         }
 
         if (node instanceof BoolNode) {
-            // Checking on equal labels might not be a good idea
-            // Different ports could share the same labels
-            const logicalOut = _.find(node.getPorts(), port => port.label === LogicalOutPort.label);
+            const logicalOut = _.find(node.getPorts(), (port: CustomPort) => port.type === LogicalOutPort.type);
             if (!logicalOut)
                 return;
 
