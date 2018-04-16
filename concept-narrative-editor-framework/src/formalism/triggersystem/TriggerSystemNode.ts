@@ -1,4 +1,5 @@
 import * as joint from 'jointjs';
+import * as _ from 'lodash';
 
 import Node from '../base/Node';
 
@@ -19,7 +20,13 @@ class TriggerSystemNode extends Node {
                             magnet: true
                         }
                     },
-                    markup: '<circle class="port-body" r="10" />' // r = radius of the circle
+                    markup: '<circle class="port-body" r="10" />', // r = radius of the circle,
+                    validateConnection: (otherPort: SVGElement): boolean => {
+                        const allowConnectionsTo = ['out'];
+                        const otherPortGroup = otherPort.getAttribute('port-group');
+
+                        return _.includes(allowConnectionsTo, otherPortGroup);
+                    }
                 },
                 'out': {
                     position: {
@@ -32,7 +39,13 @@ class TriggerSystemNode extends Node {
                             magnet: true
                         }
                     },
-                    markup: '<circle class="port-body" r="10" />' // r = radius of the circle
+                    markup: '<circle class="port-body" r="10" />', // r = radius of the circle
+                    validateConnection: (otherPort: SVGElement): boolean => {
+                        const allowConnectionsTo = ['in'];
+                        const otherPortGroup = otherPort.getAttribute('port-group');
+
+                        return _.includes(allowConnectionsTo, otherPortGroup);
+                    }
                 }
             }
         });

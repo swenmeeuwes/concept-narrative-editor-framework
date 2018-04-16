@@ -1,6 +1,7 @@
 import * as joint from 'jointjs';
 import * as SvgPanZoom from 'svg-pan-zoom';
 import Node from '../formalism/base/Node';
+import CustomPortGroup from '../formalism/base/CustomPortGroup';
 
 // Functions definitions
 type OnNodeSelected = (cellView: joint.dia.CellView | null) => void;
@@ -96,19 +97,30 @@ class NodeEditorCanvas {
 
     private validateConnection(sourceView: joint.dia.CellView, sourceMagnet: SVGElement,
         targetView: joint.dia.CellView, targetMagnet: SVGElement) {
+
+        // Check if both magnets have a port group assigned
+        const sourceMagnetGroup = sourceMagnet.getAttribute('port-group');
+        const targetMagnetGroup = targetMagnet.getAttribute('port-group');
+        if (!sourceMagnetGroup || !targetMagnetGroup)
+            return false;
+
+        const portGroupsDictionary = sourceView.model.attributes.ports.groups as { [key: string]: CustomPortGroup };
+        const portGroups = Object.keys(portGroupsDictionary);
+
+        // Check if both port groups exist
+        if (portGroups.indexOf(sourceMagnetGroup) === -1 || portGroups.indexOf(targetMagnetGroup) === -1)
+            return false;
+
         return (
             // cannot connect to same view
             sourceView !== targetView
 
             // cannot connect to same port
             && sourceMagnet !== targetMagnet
-
-            // cannot connect to same groups (in ports cannot connect to other in ports)
-            && sourceMagnet.getAttribute('port-group') !== targetMagnet.getAttribute('port-group')
-            // todo: evaluate constraints
-            // e.g. sourceView.model(oftype Node).canConnect(targetView)
-            // or on magnet level
             && sourceMagnet.getAttribute('port') !== targetMagnet.getAttribute('port')
+
+            // evaluate group constraints
+            && portGroupsDictionary[sourceMagnetGroup].validateConnection(targetMagnet)
         );
     }
 }
