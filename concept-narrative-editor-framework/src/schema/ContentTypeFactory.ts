@@ -21,7 +21,7 @@ class ContentTypeFactory {
             contentSchemaUri = this._schema.AvailableContentTypeURIs[0];
 
         const schemaData = SchemaHelper.resolveURI(contentSchemaUri, this._schema.FlatSchema);
-        return new ContentModel(schemaData, {});
+        return new ContentModel(schemaData);
     }
 
     public get AvailableContentTypes(): string[] {

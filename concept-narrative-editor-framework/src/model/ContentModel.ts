@@ -1,12 +1,13 @@
 import ContentSchema from '../schema/ContentSchema';
+import SchemaHelper from '../schema/SchemaHelper';
 
 class ContentModel {
-    private _schema: ContentSchema;
+    private _schema: any;
     private _data: any;
 
-    constructor(schema: ContentSchema, data: Object = {}) {
+    constructor(schema: any, data?: Object) {
         this._schema = schema;
-        this._data = data;
+        this._data = data || SchemaHelper.default(schema);
     }
 
     public get schema(): ContentSchema {

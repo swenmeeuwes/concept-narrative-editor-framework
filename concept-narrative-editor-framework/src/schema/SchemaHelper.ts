@@ -1,4 +1,5 @@
 import * as RefParser from 'json-schema-ref-parser';
+import * as defaults from 'json-schema-defaults';
 import ContentSchema from './ContentSchema';
 
 class SchemaHelper {
@@ -57,6 +58,13 @@ class SchemaHelper {
 
         const contentTypeKey = isUri ? this.trimRefPath(contentTypeNameOrUri) : contentTypeNameOrUri;
         return schema.contentTypes.hasOwnProperty(contentTypeKey);
+    }
+
+    /**
+     * Constructs an object with the default values provided by the schema
+     */
+    public static default(schema: Object): Object {
+        return defaults(schema);
     }
 }
 
