@@ -7,15 +7,18 @@
 		"propertyTypes": {
 			"stringProperty": {
 				"$id": "#/definitions/propertyTypes/stringProperty",
-				"type": "string"
+				"type": "string",
+				"default": ""
 			},
 			"booleanProperty": {
 				"$id": "#/definitions/propertyTypes/booleanProperty",
-				"type": "boolean"
+				"type": "boolean",
+				"default": false
 			},
 			"jsonObjectProperty": {
 				"$id": "#/definitions/propertyTypes/jsonObjectProperty",
-				"type": "string"
+				"type": "string",
+				"default": "{}"
 			},
 			"arrayProperty": {
 				"$id": "#/definitions/propertyTypes/arrayProperty",
@@ -35,7 +38,8 @@
 			},
 			"urlProperty": {
 				"$id": "#/definitions/propertyTypes/urlProperty",
-				"type": "string"
+				"type": "string",
+				"default": ""
 			},
 			"resourceProperty": {
 				"$id": "#/definitions/propertyTypes/resourceProperty",
