@@ -10,6 +10,8 @@ import ContentTypeFactory from './schema/ContentTypeFactory';
 import ContentTypeNode from './model/ContentTypeNode';
 import TriggerSystemNodeBuilder from './formalism/triggersystem/TriggerSystemNodeBuilder';
 import TriggerSystemDirector from './formalism/triggersystem/TriggerSystemDirector';
+import TriggerSystemExportGeneratingVisitor from './formalism/triggersystem/TriggerSystemExportGeneratingVisitor';
+import Node from './formalism/base/Node';
 // import StateMachineNodeBuilder from './formalism/statemachine/StateMachineNodeBuilder';
 // import StateMachineDirector from './formalism/statemachine/StateMachineDirector';
 
@@ -82,16 +84,22 @@ class NodeEditor extends React.Component<Props, State> {
     });
 
     // TEST
+    const exportGeneratingVisitor = new TriggerSystemExportGeneratingVisitor(this._graph);
     const selectedCell = cellView.model;
     if (selectedCell !== undefined) {
       const startElement = selectedCell.isElement() ? selectedCell as joint.dia.Element : undefined;
 
-      if (startElement !== undefined)
+      if (startElement !== undefined) {
         this._graph.bfs(startElement,
           (visitedElement, distance) => {
-            console.log(visitedElement, distance, visitedElement.getPorts()); return true;
+            if (visitedElement instanceof Node)
+              visitedElement.accept(exportGeneratingVisitor);
+            return true;
           },
           { outbound: true });
+
+        console.log(exportGeneratingVisitor.getResult().storyArcs[0].storyNodes);
+      }
     }
   }
 
