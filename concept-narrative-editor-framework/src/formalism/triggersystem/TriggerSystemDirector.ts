@@ -10,6 +10,7 @@ import {
     AvailablePort, CompletedPort, LogicalOutPort,
     LogicalInPort, DelayInPort, DelayOutPort
 } from './TriggerSystemPorts';
+import DelayNode from './syntax/DelayNode';
 
 class TriggerSystemDirector extends NodeDirector<TriggerSystemNode> {
     public construct(): TriggerSystemNode[] {
@@ -112,13 +113,13 @@ class TriggerSystemDirector extends NodeDirector<TriggerSystemNode> {
         return node;
     }
 
-    private delay(): TriggerSystemNode {
+    private delay(): DelayNode {
         return this._builder
-            .build(TriggerSystemNode)
+            .build(DelayNode)
             .label('Delay')
             .addPort(DelayInPort)
             .addPort(DelayOutPort)
-            .getNode();
+            .getNode<DelayNode>();
     }
 }
 
