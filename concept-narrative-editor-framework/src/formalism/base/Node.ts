@@ -1,6 +1,7 @@
 import * as joint from 'jointjs';
 
 import '../../model/ContentTypeNode.css';
+import ExportGeneratingVisitor from './ExportGeneratingVisitor';
 
 abstract class Node extends joint.shapes.basic.Generic {
     constructor(attributes: joint.dia.Element.Attributes = {}, options: any = {}) {
@@ -21,6 +22,10 @@ abstract class Node extends joint.shapes.basic.Generic {
                 'text': { 'font-size': 14, 'ref-x': .5, 'ref-y': .15, ref: 'rect', 'y-alignment': 'middle', 'x-alignment': 'middle', 'fill': 'rgb(0, 0, 0)' }
             }
         }, joint.shapes.basic.Generic.prototype.defaults);
+    }
+
+    public accept(visitor: ExportGeneratingVisitor<any>) {
+        visitor.visit(this);
     }
 }
 
