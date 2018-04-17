@@ -8,6 +8,8 @@ import { TriggerSystemExport, StoryNode } from '../base/StoryExport';
 import { UnlockPort, LogicalOutPort, AvailableConditionPort } from './TriggerSystemPorts';
 import BoolNode from './syntax/BoolNode';
 import CustomPort from '../base/CustomPort';
+import DelayNode from './syntax/DelayNode';
+import LogicalExpressionNode from './syntax/LogicalExpressionNode';
 
 class TriggerSystemExportGeneratingVisitor implements ExportGeneratingVisitor<TriggerSystemExport> {
     private _graph: joint.dia.Graph;
@@ -105,7 +107,17 @@ class TriggerSystemExportGeneratingVisitor implements ExportGeneratingVisitor<Tr
             return;
         }
 
-        console.warn(`[TriggerSystemExportGeneratingVisitor] Could not handle node: ${node}`);
+        if (node instanceof DelayNode) {
+            // todo
+            return;
+        }
+
+        if (node instanceof LogicalExpressionNode) {
+            // todo
+            return;
+        }
+
+        console.warn(`[TriggerSystemExportGeneratingVisitor] Could not handle node: ${node.constructor}`);
     }
 
     public getResult() {
