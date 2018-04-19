@@ -8,6 +8,8 @@ const Menu = electron.remote.Menu;
 class ApplicationMenu {
     private static _instance: ApplicationMenu;
 
+    private _menu: Electron.Menu;
+
     private _template = [{
         label: 'Edit',
         submenu: [
@@ -15,14 +17,14 @@ class ApplicationMenu {
                 label: 'Insert',
                 accelerator: 'CmdOrCtrl+I',
                 click() {
-                    ApplicationMenu.Instance.handleInsert();
+                    ApplicationMenu.instance.handleInsert();
                 }
             },
             {
                 label: 'Delete',
                 accelerator: 'CmdOrCtrl+D',
                 click() {
-                    ApplicationMenu.Instance.handleDelete();
+                    ApplicationMenu.instance.handleDelete();
                 }
             }
             // { role: 'undo' },
@@ -63,11 +65,15 @@ class ApplicationMenu {
     public handleInsert = (): void => { throw '[ApplicationMenu] Insert not implemented'; };
     public handleDelete = (): void => { throw '[ApplicationMenu] Delete not implemented'; };
 
-    public static get Instance(): ApplicationMenu {
+    public static get instance(): ApplicationMenu {
         return this._instance || (this._instance = new ApplicationMenu());
     }
 
-    constructor() {
+    public get menu() {
+        return this._menu;
+    }
+
+    public construct() {
         // Mac doesn't take the first menu item in account, 
         // so here we add our app name as the first item 
         if (process.platform === 'darwin') {
@@ -87,8 +93,8 @@ class ApplicationMenu {
             });
         }
 
-        const menu = Menu.buildFromTemplate(this._template);
-        Menu.setApplicationMenu(menu);
+        this._menu = Menu.buildFromTemplate(this._template);
+        Menu.setApplicationMenu(this._menu);
     }
 }
 
