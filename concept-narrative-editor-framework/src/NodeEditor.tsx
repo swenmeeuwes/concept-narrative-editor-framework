@@ -45,17 +45,16 @@ class NodeEditor extends React.Component<Props, State> {
       for (let j = 0; j < availableNodes.length; j++) {
         const node = availableNodes[j];
         node.position(16 + 116 * (j % 4), 16 + 116 * Math.floor(j / 4));
-
         this._graph.addCell(node);
       }
-    }, 100);
+    }, 0);
   }
 
   public get Canvas(): NodeEditorCanvas {
     return this._canvas;
   }
 
-  componentDidMount() {
+  public componentDidMount() {
     const parentContainer = document.getElementById('nodeEditor') as HTMLElement;
     const container = document.getElementById('nodeEditorCanvas') as HTMLElement;
     this._canvas = new NodeEditorCanvas({
@@ -64,9 +63,11 @@ class NodeEditor extends React.Component<Props, State> {
       model: this._graph,
       onNodeSelected: this.onNodeSelected.bind(this)
     });
+
+    this._graph.on('change:embeds', this.onEmbed);
   }
 
-  onNodeSelected(cellView: joint.dia.CellView) {
+  public onNodeSelected(cellView: joint.dia.CellView) {
     // Unhighlight previous node
     if (this.state.selectedNode !== null)
       this.state.selectedNode.unhighlight();
@@ -100,7 +101,7 @@ class NodeEditor extends React.Component<Props, State> {
     }
   }
 
-  render() {
+  public render() {
     const contentInspector = <ContentInspector selectedNode={this.state.selectedNode} />;
 
     return (
@@ -131,8 +132,19 @@ class NodeEditor extends React.Component<Props, State> {
     });
   }
 
-  private onEmbed(e) {
-    console.log(e);
+  private onEmbed(element: joint.dia.Element, newEmbeds: string[], opt: any) {
+    const previousEmbeds = element.previous('embeds') as string[];
+    const currentEmbeds = element.get('embeds') as string[];
+    if (previousEmbeds && currentEmbeds && previousEmbeds.length > currentEmbeds.length)
+      return; // Don't update when an embed is moved around
+              // todo: fit if embed was removed
+
+    element.fitEmbeds({
+      padding: 64
+    });
+
+    const newSize = element.size();
+    element.attr('rect', { width: newSize.width, height: newSize.height });
   }
 }
 
