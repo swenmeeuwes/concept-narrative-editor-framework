@@ -11,6 +11,7 @@ import {
     LogicalInPort, DelayInPort, DelayOutPort
 } from './TriggerSystemPorts';
 import DelayNode from './syntax/DelayNode';
+import GroupNode from './syntax/GroupNode';
 
 class TriggerSystemDirector extends NodeDirector<TriggerSystemNode> {
     public construct(): TriggerSystemNode[] {
@@ -22,7 +23,8 @@ class TriggerSystemDirector extends NodeDirector<TriggerSystemNode> {
             this.true(),
             this.false(),
             this.delay(),
-            this.logicalExpression()
+            this.logicalExpression(),
+            this.group()
         ];
     }
 
@@ -35,7 +37,7 @@ class TriggerSystemDirector extends NodeDirector<TriggerSystemNode> {
             .addPort(UnlockedPort)
             .addPort(AvailablePort)
             .addPort(CompletedPort)
-            .getNode<ContentNode>();
+            .getNode();
     }
 
     private logicalExpression(): LogicalExpressionNode {
@@ -119,7 +121,14 @@ class TriggerSystemDirector extends NodeDirector<TriggerSystemNode> {
             .label('Delay')
             .addPort(DelayInPort)
             .addPort(DelayOutPort)
-            .getNode<DelayNode>();
+            .getNode();
+    }
+
+    private group(): GroupNode {
+        return this._builder
+            .build(GroupNode)
+            .label('Group')
+            .getNode();
     }
 }
 
