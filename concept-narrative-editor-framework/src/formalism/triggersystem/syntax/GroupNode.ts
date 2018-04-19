@@ -1,7 +1,6 @@
 import * as joint from 'jointjs';
 
 import TriggerSystemNode from '../TriggerSystemNode';
-import ContentNode from './ContentNode';
 import Node from '../../base/Node';
 
 class GroupNode extends TriggerSystemNode {
@@ -21,7 +20,7 @@ class GroupNode extends TriggerSystemNode {
     }
 
     public validateEmbed(child: Node) {
-        return child instanceof ContentNode;
+        return true;
     }
 }
 
