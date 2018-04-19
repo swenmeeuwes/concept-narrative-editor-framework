@@ -1,17 +1,16 @@
 import * as React from 'react';
 import * as joint from 'jointjs';
-import NodeEditorCanvas from './model/NodeEditorCanvas';
-import ContentInspector from './inspector/ContentInspector';
 
-import '../node_modules/jointjs/dist/joint.min.css';
-import './NodeEditor.css';
+import NodeEditorCanvas from './NodeEditorCanvas';
+import ContentInspector from './inspector/ContentInspector';
 import ApplicationMenu from './menu/ApplicationMenu';
 import TriggerSystemNodeBuilder from './formalism/triggersystem/TriggerSystemNodeBuilder';
 import TriggerSystemDirector from './formalism/triggersystem/TriggerSystemDirector';
 import TriggerSystemExportGeneratingVisitor from './formalism/triggersystem/TriggerSystemExportGeneratingVisitor';
 import Node from './formalism/base/Node';
-// import StateMachineNodeBuilder from './formalism/statemachine/StateMachineNodeBuilder';
-// import StateMachineDirector from './formalism/statemachine/StateMachineDirector';
+
+import '../node_modules/jointjs/dist/joint.min.css';
+import './NodeEditor.css';
 
 interface Props { }
 interface State {
@@ -94,7 +93,7 @@ class NodeEditor extends React.Component<Props, State> {
               visitedElement.accept(exportGeneratingVisitor);
             return true;
           },
-          { outbound: true });
+          { outbound: true, inbound: true });
 
         console.log(exportGeneratingVisitor.getResult().storyArcs[0].storyNodes);
       }
@@ -130,6 +129,10 @@ class NodeEditor extends React.Component<Props, State> {
     this.setState({
       selectedNode: null
     });
+  }
+
+  private onEmbed(e) {
+    console.log(e);
   }
 }
 

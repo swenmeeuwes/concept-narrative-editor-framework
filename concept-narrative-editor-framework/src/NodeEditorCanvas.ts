@@ -1,7 +1,7 @@
 import * as joint from 'jointjs';
 import * as SvgPanZoom from 'svg-pan-zoom';
-import Node from '../formalism/base/Node';
-import CustomPortGroup from '../formalism/base/CustomPortGroup';
+import Node from './formalism/base/Node';
+import CustomPortGroup from './formalism/base/CustomPortGroup';
 
 // Functions definitions
 type OnNodeSelected = (cellView: joint.dia.CellView | null) => void;
