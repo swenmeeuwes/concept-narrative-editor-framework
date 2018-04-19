@@ -37,7 +37,9 @@ class NodeEditorCanvas {
             defaultLink: defaultLink,
             defaultRouter: { name: 'manhattan' },
             validateConnection: this.validateConnection,
-            markAvailable: true
+            validateEmbedding: this.validateEmbedding,
+            markAvailable: true,
+            embeddingMode: true // Allow cells to embed when dragged over each other
         });
 
         this._panZoomInstance = SvgPanZoom(`#${props.container.id} svg`, {
@@ -132,6 +134,15 @@ class NodeEditorCanvas {
             // evaluate group constraints
             portGroupsDictionary[sourceMagnetGroup].validateConnection(targetMagnet)
         );
+    }
+
+    private validateEmbedding(childView: joint.dia.ElementView, parentView: joint.dia.ElementView) {
+        const child = childView.model;
+        const parent = parentView.model;
+        if (!(child instanceof Node) || !(parent instanceof Node))
+            return false;
+
+        return parent.validateEmbed(child);
     }
 }
 

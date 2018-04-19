@@ -2,8 +2,9 @@ import * as joint from 'jointjs';
 
 import '../../model/ContentTypeNode.css';
 import ExportGeneratingVisitor from './ExportGeneratingVisitor';
+import Embeddable from './Embeddable';
 
-abstract class Node extends joint.shapes.basic.Generic {
+abstract class Node extends joint.shapes.basic.Generic implements Embeddable<Node> {
     constructor(attributes: joint.dia.Element.Attributes = {}, options: any = {}) {
         super(attributes, options);
 
@@ -26,6 +27,10 @@ abstract class Node extends joint.shapes.basic.Generic {
 
     public accept(visitor: ExportGeneratingVisitor<any>) {
         visitor.visit(this);
+    }
+
+    public validateEmbed(child: Node) {
+        return false;
     }
 }
 
