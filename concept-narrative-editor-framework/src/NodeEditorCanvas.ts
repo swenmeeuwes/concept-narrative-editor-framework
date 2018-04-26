@@ -2,6 +2,7 @@ import * as joint from 'jointjs';
 import * as SvgPanZoom from 'svg-pan-zoom';
 import Node from './formalism/base/Node';
 import CustomPortGroup from './formalism/base/CustomPortGroup';
+import CustomPort from './formalism/base/CustomPort';
 
 // Functions definitions
 type OnNodeSelected = (cellView: joint.dia.CellView | null) => void;
@@ -36,8 +37,8 @@ class NodeEditorCanvas {
             linkPinning: false,
             defaultLink: defaultLink,
             defaultRouter: { name: 'manhattan' },
-            validateConnection: this.validateConnection,
-            validateEmbedding: this.validateEmbedding,
+            validateConnection: this.validateConnection.bind(this),
+            validateEmbedding: this.validateEmbedding.bind(this),
             markAvailable: true,
             embeddingMode: true // Allow cells to embed when dragged over each other
         });
@@ -99,6 +100,15 @@ class NodeEditorCanvas {
 
     private validateConnection(sourceView: joint.dia.CellView, sourceMagnet: SVGElement,
         targetView: joint.dia.CellView, targetMagnet: SVGElement) {
+
+        // Check for lower level validation methods (will overwrite group level)
+        var portId = sourceMagnet.getAttribute('port');
+        if (sourceView.model.isElement() && (sourceView.model instanceof joint.dia.Element) && portId != null) {
+            var sourceElement = sourceView.model as joint.dia.Element;
+            const sourcePort = sourceElement.getPort(portId) as CustomPort;
+            if (sourcePort.validateConnection != null)
+                return sourcePort.validateConnection(targetMagnet == null ? targetView : targetMagnet);
+        }
 
         const portGroupsDictionary = sourceView.model.attributes.ports.groups as { [key: string]: CustomPortGroup };
         const portGroups = Object.keys(portGroupsDictionary);
