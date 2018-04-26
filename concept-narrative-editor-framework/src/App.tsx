@@ -24,9 +24,11 @@ class App extends React.Component<{}, State> {
   componentWillMount() {
     AssetLoader.Instance.LoadContentSchema()
       .then((contentSchema) => {
-        this.setState({
-          loading: false
-        });
+        setTimeout(() => {
+          this.setState({
+            loading: false
+          });
+        }, 100);
       })
       .catch((err) => {
         alert(`Unable to load json schema. Error: ${err.error.message}`);
@@ -43,8 +45,12 @@ class App extends React.Component<{}, State> {
       );
     }
 
+    const spinnerStyle = {
+      fontSize: '48px'
+    };
+
     if (this.state.loading)
-      return (<i className="fas fa-spinner" />);
+      return (<i className="fa fa-spinner fa-spin centered" style={spinnerStyle} />);
 
     return (
       <NodeEditor />
