@@ -10,6 +10,7 @@ import BoolNode from './syntax/BoolNode';
 import CustomPort from '../base/CustomPort';
 import DelayNode from './syntax/DelayNode';
 import LogicalExpressionNode from './syntax/LogicalExpressionNode';
+import RootNode from './syntax/RootNode';
 
 class TriggerSystemExportGeneratingVisitor implements ExportGeneratingVisitor<TriggerSystemExport> {
     private _graph: joint.dia.Graph;
@@ -114,6 +115,11 @@ class TriggerSystemExportGeneratingVisitor implements ExportGeneratingVisitor<Tr
 
         if (node instanceof LogicalExpressionNode) {
             // todo
+            return;
+        }
+
+        if (node instanceof RootNode) {
+            // Ignore            
             return;
         }
 

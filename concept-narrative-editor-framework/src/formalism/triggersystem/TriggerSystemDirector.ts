@@ -12,10 +12,12 @@ import {
 } from './TriggerSystemPorts';
 import DelayNode from './syntax/DelayNode';
 import GroupNode from './syntax/GroupNode';
+import RootNode from './syntax/RootNode';
 
 class TriggerSystemDirector extends NodeDirector<TriggerSystemNode> {
     public construct(): TriggerSystemNode[] {
         return [
+            this.rootNode(),
             this.contentNode(),
             this.andGate(),
             this.orGate(),
@@ -26,6 +28,14 @@ class TriggerSystemDirector extends NodeDirector<TriggerSystemNode> {
             this.logicalExpression(),
             this.group()
         ];
+    }
+
+    private rootNode(): RootNode {
+        return this._builder
+            .build(RootNode)
+            .label('Start')
+            .addPort(LogicalOutPort)
+            .getNode();
     }
 
     private contentNode(): ContentNode {
