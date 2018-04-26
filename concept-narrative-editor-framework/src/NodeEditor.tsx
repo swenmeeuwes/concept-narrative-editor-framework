@@ -8,6 +8,8 @@ import TriggerSystemNodeBuilder from './formalism/triggersystem/TriggerSystemNod
 import TriggerSystemDirector from './formalism/triggersystem/TriggerSystemDirector';
 import TriggerSystemExportGeneratingVisitor from './formalism/triggersystem/TriggerSystemExportGeneratingVisitor';
 import Node from './formalism/base/Node';
+import FileManager from './io/FileManager';
+import RootNode from './formalism/triggersystem/syntax/RootNode';
 
 import '../node_modules/jointjs/dist/joint.min.css';
 import './NodeEditor.css';
@@ -31,8 +33,9 @@ class NodeEditor extends React.Component<Props, State> {
     this._graph = new joint.dia.Graph();
 
     // hack ;c
-    ApplicationMenu.Instance.handleInsert = this.handleInsert;
-    ApplicationMenu.Instance.handleDelete = this.handleDelete;
+    ApplicationMenu.instance.handleInsert = this.handleInsert.bind(this);
+    ApplicationMenu.instance.handleDelete = this.handleDelete.bind(this);
+    ApplicationMenu.instance.handleExport = this.handleExport.bind(this);
 
     setTimeout(() => {
       // Test 
@@ -41,6 +44,7 @@ class NodeEditor extends React.Component<Props, State> {
       // const nodeBuilder = new StateMachineNodeBuilder();
       // const director = new StateMachineDirector(nodeBuilder);
       const availableNodes = director.construct();
+      this.injectApplicationMenuNodeItems(availableNodes);
 
       for (let j = 0; j < availableNodes.length; j++) {
         const node = availableNodes[j];
@@ -80,25 +84,6 @@ class NodeEditor extends React.Component<Props, State> {
     this.setState({
       selectedNode: cellView
     });
-
-    // TEST
-    const exportGeneratingVisitor = new TriggerSystemExportGeneratingVisitor(this._graph);
-    const selectedCell = cellView.model;
-    if (selectedCell !== undefined) {
-      const startElement = selectedCell.isElement() ? selectedCell as joint.dia.Element : undefined;
-
-      if (startElement !== undefined) {
-        this._graph.bfs(startElement,
-          (visitedElement, distance) => {
-            if (visitedElement instanceof Node)
-              visitedElement.accept(exportGeneratingVisitor);
-            return true;
-          },
-          { outbound: true, inbound: true });
-
-        console.log(exportGeneratingVisitor.getResult().storyArcs[0].storyNodes);
-      }
-    }
   }
 
   public render() {
@@ -116,8 +101,25 @@ class NodeEditor extends React.Component<Props, State> {
     );
   }
 
+  private injectApplicationMenuNodeItems(availableNodes: Node[]) {
+    console.log('todo');
+    // availableNodes.forEach(availableNode => {
+    //   ApplicationMenu.instance.addInsertItem({
+    //     label: availableNode.attr('.label'),
+    //     click: () => this._graph.addCell(availableNode.clone())
+    //   });
+    // const menuItem = new MenuItem({
+    //   label: availableNode.attr('.label'),
+    //   click: () => this._graph.addCell(availableNode.clone())
+    // });
+
+    // ApplicationMenu.instance.menu.append(menuItem);
+    // });
+  }
+
   private handleInsert = () => {
-    this._graph.addCell(new TriggerSystemDirector(new TriggerSystemNodeBuilder()).construct()[0]);
+    // this._graph.addCell(new TriggerSystemDirector(new TriggerSystemNodeBuilder()).construct()[0]);
+    console.warn('obsolete, insert using concrete items');
   }
 
   private handleDelete = () => {
@@ -137,7 +139,7 @@ class NodeEditor extends React.Component<Props, State> {
     const currentEmbeds = element.get('embeds') as string[];
     if (previousEmbeds && currentEmbeds && previousEmbeds.length > currentEmbeds.length)
       return; // Don't update when an embed is moved around
-              // todo: fit if embed was removed
+    // todo: fit if embed was removed
 
     element.fitEmbeds({
       padding: 64
@@ -145,6 +147,29 @@ class NodeEditor extends React.Component<Props, State> {
 
     const newSize = element.size();
     element.attr('rect', { width: newSize.width, height: newSize.height });
+  }
+
+  private handleExport() {
+    // TEST
+    const exportGeneratingVisitor = new TriggerSystemExportGeneratingVisitor(this._graph);
+    const elements = this._graph.getElements();
+    const startElement = elements.find(element => element instanceof RootNode);
+
+    if (startElement !== undefined) {
+      this._graph.bfs(startElement,
+        (visitedElement, distance) => {
+          if (visitedElement instanceof Node)
+            visitedElement.accept(exportGeneratingVisitor);
+          return true;
+        },
+        { outbound: true, inbound: true });
+
+      console.log(exportGeneratingVisitor.getResult().storyArcs[0].storyNodes);
+
+      FileManager.Instance.saveAs(exportGeneratingVisitor.getJSON(), [
+        { name: 'Story Files', extensions: ['sty'] }
+      ]);
+    }
   }
 }
 

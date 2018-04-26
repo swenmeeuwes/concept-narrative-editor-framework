@@ -1,3 +1,5 @@
+import * as Electron from 'electron'; // needed for types
+
 const electron = (window as any).require('electron');
 const app = electron.remote.app;
 const Menu = electron.remote.Menu;
@@ -10,60 +12,74 @@ class ApplicationMenu {
 
     private _menu: Electron.Menu;
 
-    private _template = [{
-        label: 'Edit',
-        submenu: [
-            {
-                label: 'Insert',
-                accelerator: 'CmdOrCtrl+I',
-                click() {
-                    ApplicationMenu.instance.handleInsert();
+    private _template = [
+        {
+            label: 'File',
+            submenu: [
+                {
+                    label: 'Export',
+                    accelerator: 'CmdOrCtrl+E',
+                    click() {
+                        ApplicationMenu.instance.handleExport();
+                    }
                 }
-            },
-            {
-                label: 'Delete',
-                accelerator: 'CmdOrCtrl+D',
-                click() {
-                    ApplicationMenu.instance.handleDelete();
+            ]
+        },
+        {
+            label: 'Edit',
+            submenu: [
+                {
+                    label: 'Insert',
+                    accelerator: 'CmdOrCtrl+I',
+                    click() {
+                        ApplicationMenu.instance.handleInsert();
+                    }
+                },
+                {
+                    label: 'Delete',
+                    accelerator: 'CmdOrCtrl+D',
+                    click() {
+                        ApplicationMenu.instance.handleDelete();
+                    }
                 }
-            }
-            // { role: 'undo' },
-            // { role: 'redo' },
-            // { type: 'separator' },
-            // { role: 'cut' },
-            // { role: 'copy' },
-            // { role: 'paste' },
-            // { role: 'pasteandmatchstyle' },
-            // { role: 'delete' },
-            // { role: 'selectall' }
-        ]
-    },
-    {
-        label: 'View',
-        submenu: [
-            { role: 'reload' },
-            { role: 'forcereload' },
-            { role: 'toggledevtools' },
-            // { type: 'separator' },
-            // { role: 'resetzoom' },
-            // { role: 'zoomin' },
-            // { role: 'zoomout' },
-            // { type: 'separator' },
-            { role: 'togglefullscreen' }
-        ]
-    },
-    {
-        role: 'window',
-        submenu: [
-            { role: 'minimize' },
-            { role: 'close' }
-        ]
-    }
+                // { role: 'undo' },
+                // { role: 'redo' },
+                // { type: 'separator' },
+                // { role: 'cut' },
+                // { role: 'copy' },
+                // { role: 'paste' },
+                // { role: 'pasteandmatchstyle' },
+                // { role: 'delete' },
+                // { role: 'selectall' }
+            ]
+        },
+        {
+            label: 'View',
+            submenu: [
+                { role: 'reload' },
+                { role: 'forcereload' },
+                { role: 'toggledevtools' },
+                // { type: 'separator' },
+                // { role: 'resetzoom' },
+                // { role: 'zoomin' },
+                // { role: 'zoomout' },
+                // { type: 'separator' },
+                { role: 'togglefullscreen' }
+            ]
+        },
+        {
+            role: 'window',
+            submenu: [
+                { role: 'minimize' },
+                { role: 'close' }
+            ]
+        }
     ];
 
     // Methods to be overwritten, a bit hacky atm... fix: proper event dispatcher
     public handleInsert = (): void => { throw '[ApplicationMenu] Insert not implemented'; };
     public handleDelete = (): void => { throw '[ApplicationMenu] Delete not implemented'; };
+    public handleExport = (): void => { throw '[ApplicationMenu] Export not implemented'; };
 
     public static get instance(): ApplicationMenu {
         return this._instance || (this._instance = new ApplicationMenu());
@@ -95,6 +111,10 @@ class ApplicationMenu {
 
         this._menu = Menu.buildFromTemplate(this._template);
         Menu.setApplicationMenu(this._menu);
+    }
+
+    private constructor() {
+        this.construct();
     }
 }
 

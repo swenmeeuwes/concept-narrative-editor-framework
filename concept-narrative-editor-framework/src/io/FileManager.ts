@@ -1,6 +1,5 @@
-import * as electron from 'electron';
-import * as fs from 'fs';
-
+const electron = (window as any).require('electron');
+const fs = electron.remote.require('fs');
 const { dialog } = electron.remote;
 
 class FileManager {
@@ -10,14 +9,16 @@ class FileManager {
         return this._instance || (this._instance = new FileManager());
     }
 
-    public saveAs() {
+    public saveAs(data: string | Buffer | Uint8Array, filters: Electron.FileFilter[]) {
         const options = {
-            filters: [
-                { name: 'Story Files', extensions: ['sty'] }
-            ]
+            filters: filters
         };
         dialog.showSaveDialog(options, (fileName) => {
-            console.log(fs);
+            fs.writeFile(fileName, data, (error) => {
+                if (error) throw error;
+            });
+
+            // Save completed!
         });
     }
 
