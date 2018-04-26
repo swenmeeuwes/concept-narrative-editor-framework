@@ -37,21 +37,7 @@ class NodeEditor extends React.Component<Props, State> {
     ApplicationMenu.instance.handleDelete = this.handleDelete.bind(this);
     ApplicationMenu.instance.handleExport = this.handleExport.bind(this);
 
-    setTimeout(() => {
-      // Test 
-      const nodeBuilder = new TriggerSystemNodeBuilder();
-      const director = new TriggerSystemDirector(nodeBuilder);
-      // const nodeBuilder = new StateMachineNodeBuilder();
-      // const director = new StateMachineDirector(nodeBuilder);
-      const availableNodes = director.construct();
-      this.injectApplicationMenuNodeItems(availableNodes);
-
-      for (let j = 0; j < availableNodes.length; j++) {
-        const node = availableNodes[j];
-        node.position(16 + 116 * (j % 4), 16 + 116 * Math.floor(j / 4));
-        this._graph.addCell(node);
-      }
-    }, 0);
+    this.initializeSyntax();
   }
 
   public get Canvas(): NodeEditorCanvas {
@@ -101,20 +87,25 @@ class NodeEditor extends React.Component<Props, State> {
     );
   }
 
-  private injectApplicationMenuNodeItems(availableNodes: Node[]) {
-    console.log('todo');
-    // availableNodes.forEach(availableNode => {
-    //   ApplicationMenu.instance.addInsertItem({
-    //     label: availableNode.attr('.label'),
-    //     click: () => this._graph.addCell(availableNode.clone())
-    //   });
-    // const menuItem = new MenuItem({
-    //   label: availableNode.attr('.label'),
-    //   click: () => this._graph.addCell(availableNode.clone())
-    // });
+  private initializeSyntax() {
+    const nodeBuilder = new TriggerSystemNodeBuilder();
+    const director = new TriggerSystemDirector(nodeBuilder);
+    const availableNodes = director.construct();
+    this.injectApplicationMenuNodeItems(availableNodes);
+  }
 
-    // ApplicationMenu.instance.menu.append(menuItem);
-    // });
+  private injectApplicationMenuNodeItems(availableNodes: Node[]) {
+    availableNodes.forEach(availableNode => {
+      const menuItemOptions = {
+        label: availableNode.attr('.label').text,
+        click: () => {
+          this._graph.addCell(availableNode.clone());
+          console.log(availableNode, availableNode.getPorts(), availableNode.clone());
+        }
+      };
+
+      ApplicationMenu.instance.addMenuItemToInsert(menuItemOptions);
+    });
   }
 
   private handleInsert = () => {

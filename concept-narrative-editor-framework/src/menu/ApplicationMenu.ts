@@ -3,6 +3,7 @@ import * as Electron from 'electron'; // needed for types
 const electron = (window as any).require('electron');
 const app = electron.remote.app;
 const Menu = electron.remote.Menu;
+const MenuItem = electron.remote.MenuItem;
 
 // This could heavily profit from a global event system
 // In this system, events will be dispatched in this class and handled in other classes
@@ -26,14 +27,20 @@ class ApplicationMenu {
             ]
         },
         {
+            id: 'Edit',
             label: 'Edit',
             submenu: [
                 {
+                    id: 'Insert',
                     label: 'Insert',
-                    accelerator: 'CmdOrCtrl+I',
-                    click() {
-                        ApplicationMenu.instance.handleInsert();
-                    }
+                    submenu: []
+                    // accelerator: 'CmdOrCtrl+I',
+                    // submenu: [{
+                    //     label: 'test'
+                    // }] ,
+                    // click() {
+                    //     ApplicationMenu.instance.handleInsert();
+                    // }
                 },
                 {
                     label: 'Delete',
@@ -89,7 +96,19 @@ class ApplicationMenu {
         return this._menu;
     }
 
-    public construct() {
+    public addMenuItemToInsert(options: Electron.MenuItemConstructorOptions) {
+        const insertMenuItem = (this._menu.getMenuItemById('Insert') as Electron.MenuItemConstructorOptions);
+        const insertSubMenu = insertMenuItem.submenu as Electron.Menu;
+        insertSubMenu.append(new MenuItem(options));
+    }
+
+    public popupInsertMenu() {
+        var insertMenuItem = (this._menu.getMenuItemById('Insert') as Electron.MenuItemConstructorOptions);
+        var insertSubMenu = insertMenuItem.submenu as Electron.Menu;
+        insertSubMenu.popup();
+    }
+
+    private construct() {
         // Mac doesn't take the first menu item in account, 
         // so here we add our app name as the first item 
         if (process.platform === 'darwin') {

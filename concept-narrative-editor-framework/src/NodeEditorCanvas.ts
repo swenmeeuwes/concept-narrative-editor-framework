@@ -3,6 +3,7 @@ import * as SvgPanZoom from 'svg-pan-zoom';
 import Node from './formalism/base/Node';
 import CustomPortGroup from './formalism/base/CustomPortGroup';
 import CustomPort from './formalism/base/CustomPort';
+import ApplicationMenu from './menu/ApplicationMenu';
 
 // Functions definitions
 type OnNodeSelected = (cellView: joint.dia.CellView | null) => void;
@@ -94,8 +95,14 @@ class NodeEditorCanvas {
         this._panZoomInstance.enablePan();
     }
 
-    private onBlankPointerDown = (evt: EventTarget, x: number, y: number) => {
+    private onBlankPointerDown = (eventTarget: any, x: number, y: number) => {
         this._props.onNodeSelected(null);
+        if (eventTarget.button && eventTarget.button === 2) // 2 = right mouse button
+            this.handleRightClick();
+    }
+
+    private handleRightClick() {
+        ApplicationMenu.instance.popupInsertMenu();
     }
 
     private validateConnection(sourceView: joint.dia.CellView, sourceMagnet: SVGElement,

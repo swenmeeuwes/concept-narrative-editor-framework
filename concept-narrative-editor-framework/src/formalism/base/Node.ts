@@ -25,6 +25,14 @@ abstract class Node extends joint.shapes.basic.Generic implements Embeddable<Nod
         }, joint.shapes.basic.Generic.prototype.defaults);
     }
 
+    // todo: use prototype design pattern
+    public clone() {
+        const nodeBase = super.clone() as Node;
+        nodeBase.addPorts(this.getPorts());
+        
+        return nodeBase;
+    }
+
     public accept(visitor: ExportGeneratingVisitor<any>) {
         visitor.visit(this);
     }
