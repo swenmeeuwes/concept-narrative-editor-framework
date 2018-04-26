@@ -33,7 +33,10 @@ const CompletedPort = {
 const LogicalInPort = {
     label: 'logical in',
     type: 'logical in',
-    group: 'in'
+    group: 'in',
+    validateConnection: (against: SVGElement | joint.dia.CellView) => {
+        return true;
+    }
 };
 
 const LogicalOutPort = {
