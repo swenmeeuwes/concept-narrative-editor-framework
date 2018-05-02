@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Form, { IChangeEvent } from 'react-jsonschema-form';
+import Form, { IChangeEvent, ISubmitEvent } from 'react-jsonschema-form';
 
 import ContentNode from '../formalism/triggersystem/syntax/ContentNode';
 import ContentSchemaWrapper from '../schema/ContentSchemaWrapper';
@@ -107,11 +107,11 @@ class ContentInspector extends React.Component<Props, State> {
         }
     }
 
-    private onContentDataSubmit = (formData: FormData) => {
+    private onContentDataSubmit = (event: ISubmitEvent<any>) => {
         // Might be overkill, since it is already set in onValueChanged ...
         if (this.state.selectedNode !== null) {
             const contentTypeNode = this.state.selectedNode.model as ContentNode;
-            contentTypeNode.contentModel.data = formData;
+            contentTypeNode.contentModel.data = event.formData;
         }
 
         if (this.state.selectedNode !== null)
