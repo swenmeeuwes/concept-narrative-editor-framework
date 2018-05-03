@@ -99,8 +99,8 @@ class NodeEditor extends React.Component<Props, State> {
       const menuItemOptions = {
         label: availableNode.attr('.label').text,
         click: () => {
-          this._graph.addCell(availableNode.clone());
-          console.log(availableNode, availableNode.getPorts(), availableNode.clone());
+          let node = availableNode.clone();
+          this._graph.addCell(node);
         }
       };
 
@@ -109,7 +109,6 @@ class NodeEditor extends React.Component<Props, State> {
   }
 
   private handleInsert = () => {
-    // this._graph.addCell(new TriggerSystemDirector(new TriggerSystemNodeBuilder()).construct()[0]);
     console.warn('obsolete, insert using concrete items');
   }
 
