@@ -20,6 +20,10 @@ class BoolValue implements Value {
     public evaluate(): Value {
         return new BoolValue(this._value);
     }
+
+    public toString() {
+        return this._value.toString();
+    }
 }
 
 class NumberValue implements Value {
@@ -40,6 +44,10 @@ class NumberValue implements Value {
     public evaluate(): Value {
         return new NumberValue(this._value);
     }
+
+    public toString() {
+        return this._value.toString();
+    }
 }
 
 class StringValue implements Value {
@@ -59,6 +67,10 @@ class StringValue implements Value {
 
     public evaluate(): Value {
         return new StringValue(this._value);
+    }
+
+    public toString() {
+        return this._value.toString();
     }
 }
 
