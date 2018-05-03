@@ -15,6 +15,13 @@ class LogicalExpressionNode extends TriggerSystemNode {
     public get expression() {
         return this._expression;
     }
+
+    public clone() {
+        const cloned = super.clone() as LogicalExpressionNode;
+        cloned.expression = this.expression;
+        
+        return cloned;
+    }
 }
 
 export default LogicalExpressionNode;

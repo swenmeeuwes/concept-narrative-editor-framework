@@ -28,6 +28,13 @@ class BoolNode extends TriggerSystemNode {
             }
         }, joint.shapes.basic.Generic.prototype.defaults);
     }
+
+    public clone() {
+        const cloned = super.clone() as BoolNode;
+        cloned.value = this.value;
+        
+        return cloned;
+    }
 }
 
 export default BoolNode;
