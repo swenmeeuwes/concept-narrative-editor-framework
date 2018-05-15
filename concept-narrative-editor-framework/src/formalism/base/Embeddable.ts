@@ -1,5 +1,3 @@
-interface Embeddable<T> {
+export default interface Embeddable<T> {
     validateEmbed(child: T): boolean;
 }
-
-export default Embeddable;
