@@ -8,7 +8,7 @@ abstract class Node extends joint.shapes.basic.Generic implements Embeddable<Nod
     constructor(attributes: joint.dia.Element.Attributes = {}, options: any = {}) {
         super(attributes, options);
 
-        this.set('markup', `<g class="content-type-node">
+        this.set('markup', `<g class="editor-node">
                                 <rect class="body" />
                                 <text class="label" />
                             </g>`);
