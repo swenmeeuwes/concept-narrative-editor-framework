@@ -33,6 +33,10 @@ class Equals extends LogicalExpression {
 
         return new BoolValue((this._left.evaluate() as BoolValue).value === (this._right.evaluate() as BoolValue).value);
     }
+
+    public toString() {
+        return `(${this._left.toString()} == ${this._right.toString()})`;
+    }
 }
 
 class And extends LogicalExpression {
@@ -57,6 +61,10 @@ class And extends LogicalExpression {
                     are not of the same type and thus can't be evaluated`;
 
         return new BoolValue((this._left.evaluate() as BoolValue).value && (this._right.evaluate() as BoolValue).value);
+    }
+
+    public toString() {
+        return `(${this._left.toString()} & ${this._right.toString()})`;
     }
 }
 
@@ -83,6 +91,10 @@ class Or extends LogicalExpression {
 
         return new BoolValue((this._left.evaluate() as BoolValue).value || (this._right.evaluate() as BoolValue).value);
     }
+
+    public toString() {
+        return `(${this._left.toString()} | ${this._right.toString()})`;
+    }
 }
 
 class GreaterThan extends LogicalExpression {
@@ -107,6 +119,10 @@ class GreaterThan extends LogicalExpression {
                     are not of the same type and thus can't be evaluated`;
 
         return new BoolValue((this._left.evaluate() as BoolValue).value > (this._right.evaluate() as BoolValue).value);
+    }
+
+    public toString() {
+        return `(${this._left.toString()} > ${this._right.toString()})`;
     }
 }
 
@@ -133,6 +149,10 @@ class LessThan extends LogicalExpression {
 
         return new BoolValue((this._left.evaluate() as BoolValue).value < (this._right.evaluate() as BoolValue).value);
     }
+
+    public toString() {
+        return `(${this._left.toString()} < ${this._right.toString()})`;
+    }
 }
 
 class Not extends LogicalExpression {
@@ -150,6 +170,10 @@ class Not extends LogicalExpression {
             throw `Logical expression can only evaluate booleans`;
 
         return new BoolValue(!(this._expr.evaluate() as BoolValue).value);
+    }
+
+    public toString() {
+        return `!${this._expr.toString()}`;
     }
 }
 
