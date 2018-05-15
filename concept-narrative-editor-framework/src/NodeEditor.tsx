@@ -57,14 +57,12 @@ class NodeEditor extends React.Component<Props, State> {
   }
 
   public onNodeSelected(cellView: joint.dia.CellView) {
-    if (!cellView)
-      return;
-
     // Unhighlight previous node
     if (this.state.selectedCellView)
       this.state.selectedCellView.unhighlight();
 
-    cellView.highlight();
+    if (cellView)
+      cellView.highlight();
 
     this.setState({
       selectedCellView: cellView
