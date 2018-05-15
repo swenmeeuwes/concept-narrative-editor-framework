@@ -1,35 +1,6 @@
-/* .joint-cell .rotatable .body {
-    stroke-width: 4;
-    stroke: '#DF691A';
-    fill: '#EBEBEB';
-    rx: 5;
-    ry: 5;
-}
-
-.joint-port {
-    stroke-width: 4px;
-} */
-
-/* port styling */
+/* Port styling */
 .available-magnet {
     fill: rgb(255, 187, 0);
-}
-
-/* element styling */
-/* .available-cell rect {
-    stroke-dasharray: 5, 2;
-} */
-
-.content-type-node .body {
-    stroke-width: 4;
-    stroke: rgb(223, 105, 26);
-    fill: rgb(235, 235, 235);
-    rx: 5;
-    ry: 5;
-}
-
-.content-type-node .label {
-    font-size: 12px;
 }
 
 .port-body {
@@ -37,19 +8,21 @@
     stroke: rgb(223, 105, 26);    
 }
 
-/* .port-label {
-    display: none;
-} */
+/* Element styling */
+.editor-node .body {
+    stroke-width: 4;
+    stroke: rgb(223, 105, 26);
+    fill: rgb(235, 235, 235);
+    rx: 5;
+    ry: 5;
+}
 
+.editor-node .label {
+    font-size: 12px;
+}
+
+/* Connection styling */
 .connection {
     stroke: rgb(78, 93, 108);
     stroke-width: 5;
 }
-
-/* .port-body[port="In"] {
-    transform: translateX(-16px);
-}
-
-.port-body[port="Out"] {
-    transform: translateX(16px);
-} */
