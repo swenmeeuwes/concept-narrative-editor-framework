@@ -1,10 +1,12 @@
 import * as joint from 'jointjs';
+import * as React from 'react';
 
 import '../../model/ContentTypeNode.css';
 import ExportGeneratingVisitor from './ExportGeneratingVisitor';
 import Embeddable from './Embeddable';
+import Inspectable from './Inspectable';
 
-abstract class Node extends joint.shapes.basic.Generic implements Embeddable<Node> {
+abstract class Node extends joint.shapes.basic.Generic implements Embeddable<Node>, Inspectable {
     constructor(attributes: joint.dia.Element.Attributes = {}, options: any = {}) {
         super(attributes, options);
 
@@ -39,6 +41,10 @@ abstract class Node extends joint.shapes.basic.Generic implements Embeddable<Nod
 
     public validateEmbed(child: Node) {
         return false;
+    }
+
+    public render() {
+        return (<div />);
     }
 }
 

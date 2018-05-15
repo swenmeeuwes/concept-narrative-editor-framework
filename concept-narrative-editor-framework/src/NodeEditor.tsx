@@ -16,7 +16,7 @@ import './NodeEditor.css';
 
 interface Props { }
 interface State {
-  selectedNode: joint.dia.CellView | null;
+  selectedCellView: joint.dia.CellView | null;
 }
 
 class NodeEditor extends React.Component<Props, State> {
@@ -27,13 +27,12 @@ class NodeEditor extends React.Component<Props, State> {
     super(props);
 
     this.state = {
-      selectedNode: null
+      selectedCellView: null
     };
 
     this._graph = new joint.dia.Graph();
 
     // hack ;c
-    ApplicationMenu.instance.handleInsert = this.handleInsert.bind(this);
     ApplicationMenu.instance.handleDelete = this.handleDelete.bind(this);
     ApplicationMenu.instance.handleExport = this.handleExport.bind(this);
 
@@ -58,27 +57,27 @@ class NodeEditor extends React.Component<Props, State> {
   }
 
   public onNodeSelected(cellView: joint.dia.CellView) {
-    // Unhighlight previous node
-    if (this.state.selectedNode !== null)
-      this.state.selectedNode.unhighlight();
-
     if (!cellView)
       return;
+
+    // Unhighlight previous node
+    if (this.state.selectedCellView)
+      this.state.selectedCellView.unhighlight();
 
     cellView.highlight();
 
     this.setState({
-      selectedNode: cellView
+      selectedCellView: cellView
     });
   }
 
   public render() {
-    const contentInspector = <ContentInspector selectedNode={this.state.selectedNode} />;
+    const node = this.state.selectedCellView ? this.state.selectedCellView.model as Node : null;
 
     return (
       <div>
         <div id="inspector">
-          {contentInspector}
+          <ContentInspector selectedInspectable={node} />
         </div>
         <div id="nodeEditor">
           <div id="nodeEditorCanvas" />
@@ -108,19 +107,15 @@ class NodeEditor extends React.Component<Props, State> {
     });
   }
 
-  private handleInsert = () => {
-    console.warn('obsolete, insert using concrete items');
-  }
-
   private handleDelete = () => {
-    const selectedNode = this.state.selectedNode;
-    if (!selectedNode || !selectedNode.model)
+    const selectedNode = this.state.selectedCellView;
+    if (!selectedNode)
       return;
 
-    selectedNode.model.remove();
+    selectedNode.remove();
 
     this.setState({
-      selectedNode: null
+      selectedCellView: null
     });
   }
 
