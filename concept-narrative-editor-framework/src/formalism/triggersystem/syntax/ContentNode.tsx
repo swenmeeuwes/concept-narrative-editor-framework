@@ -17,9 +17,6 @@ class ContentNode extends TriggerSystemNode {
 
         this._contentModel = ContentTypeFactory.Instance.createContent();
         this._availableContentTypes = ContentTypeFactory.Instance.AvailableContentTypes;
-
-        this.onContentTypeChange = this.onContentTypeChange.bind(this);
-        this.onContentDataValueChanged = this.onContentDataValueChanged.bind(this);
     }
 
     public get contentModel() {
@@ -63,7 +60,7 @@ class ContentNode extends TriggerSystemNode {
         );
     }
 
-    private onContentTypeChange(event: React.FormEvent<HTMLSelectElement>) {
+    private onContentTypeChange = (event: React.FormEvent<HTMLSelectElement>) => {
         const selectedValue = event.currentTarget.value;
 
         // First check if it is an available content type
@@ -73,7 +70,7 @@ class ContentNode extends TriggerSystemNode {
         this.contentModel = ContentTypeFactory.Instance.createContent(SchemaHelper.padContentTypeDefinition(selectedValue));
     }
 
-    private onContentDataValueChanged(event: IChangeEvent) {
+    private onContentDataValueChanged = (event: IChangeEvent) => {
         this.contentModel.data = event.formData;
     }
 }
