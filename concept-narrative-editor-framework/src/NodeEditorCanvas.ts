@@ -106,7 +106,10 @@ class NodeEditorCanvas {
     }
 
     private validateConnection(sourceView: joint.dia.CellView, sourceMagnet: SVGElement,
-        targetView: joint.dia.CellView, targetMagnet: SVGElement) {
+        targetView: joint.dia.CellView, targetMagnet: SVGElement, 
+        end: 'source' | 'target', linkView: joint.dia.LinkView) {
+
+        // sourceMagnet seems to be undefined in 2.1.0
 
         // Check for lower level validation methods (will overwrite group level)
         var portId = sourceMagnet.getAttribute('port');
