@@ -7,6 +7,7 @@ import TextFormattingUtil from '../../../util/TextFormattingUtil';
 import ContentTypeFactory from '../../../schema/ContentTypeFactory';
 import * as React from 'react';
 import EnumProperty from '../../../properties/EnumProperty';
+import { FormEvent } from 'react';
 
 class ContentNode extends TriggerSystemNode {
     private _contentModel: ContentModel;
@@ -60,7 +61,7 @@ class ContentNode extends TriggerSystemNode {
         );
     }
 
-    private onContentTypeChange = (event: React.FormEvent<HTMLSelectElement>) => {
+    private onContentTypeChange = (event: FormEvent<HTMLSelectElement>) => {
         const selectedValue = event.currentTarget.value;
 
         // First check if it is an available content type
