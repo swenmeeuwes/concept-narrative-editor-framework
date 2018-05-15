@@ -2,7 +2,7 @@ import ContentSchema from '../schema/ContentSchema';
 import SchemaHelper from '../schema/SchemaHelper';
 
 class ContentModel {
-    private _schema: any;
+    private _schema: ContentSchema;
     private _data: any;
 
     constructor(schema: any, data?: Object) {
