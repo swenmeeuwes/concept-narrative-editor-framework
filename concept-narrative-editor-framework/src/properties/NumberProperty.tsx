@@ -21,6 +21,9 @@ export default class NumberProperty extends React.Component<Props, State> {
     }
 
     onChange = (event: React.FormEvent<HTMLInputElement>) => {
+        if (!event.currentTarget.valueAsNumber)
+            return;
+
         this.setState({
             value: event.currentTarget.valueAsNumber
         });
