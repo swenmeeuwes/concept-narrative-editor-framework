@@ -3,6 +3,7 @@ import * as React from 'react';
 
 import TriggerSystemNode from '../TriggerSystemNode';
 import { FormEvent } from 'react';
+import NumberProperty from '../../../properties/NumberProperty';
 
 class DelayNode extends TriggerSystemNode {
     private _value: number;
@@ -50,13 +51,13 @@ class DelayNode extends TriggerSystemNode {
         return (
             <div>
                 <h4>Delay (in ms)</h4>
-                <input type="number" onChange={this.onValueChange} value={this.value} />
+                <NumberProperty onChange={this.onValueChange} value={this.value} />
             </div>
         );
     }
 
     private onValueChange = (event: FormEvent<HTMLInputElement>) => {
-        this.value = parseInt(event.currentTarget.value, 10) || 0;
+        this.value = event.currentTarget.valueAsNumber;
     }
 }
 
