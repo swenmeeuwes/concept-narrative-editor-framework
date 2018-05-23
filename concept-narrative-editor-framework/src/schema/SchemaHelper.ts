@@ -1,33 +1,20 @@
-import * as RefParser from 'json-schema-ref-parser';
 import * as defaults from 'json-schema-defaults';
 import ContentSchema from './ContentSchema';
 
 class SchemaHelper {
     /**
-     * @Obsolete
-     * Resolves the schema reference and return the schema that is referenced
-     */    
-    public static resolveSchemaReference(schema: Object, schemaRef: string, refParser: RefParser = new RefParser()): Promise<Object> {
-        return new Promise((resolve, reject) => {
-            const schemaRefHierarchy = schemaRef.replace('#', '').split('/');
-            if (schemaRefHierarchy[0] === '')
-                schemaRefHierarchy.shift();
+     * Resolves a relative URI
+     * @param uri URI to resolve
+     * @param schema in the given schema
+     * @returns the referenced schema
+     */
+    public static resolveRelativeURI(uri: string, schema: ContentSchema): ContentSchema {
+        // Check if the URI is relative
+        if (uri.indexOf('#/') === -1)
+            throw(`The following URI is not relative: ${uri}`);
 
-            refParser.dereference(schema).then((dereferencedSchema) => {
-                const resolvedSchema = schemaRefHierarchy.reduce((accumulator, current) => accumulator[current], schema);
-                resolve(resolvedSchema);
-            }).catch((err) => {
-                reject(err);
-            });
-        });
-    }
-
-    public static resolveURI(uri: string, schema: ContentSchema): ContentSchema {
-        const schemaRefHierarchy = uri.replace('#', '').split('/');
-        if (schemaRefHierarchy[0] === '')
-            schemaRefHierarchy.shift();
-
-        return schemaRefHierarchy.reduce((accumulator, current) => accumulator[current], schema);
+        const referencePath = uri.replace('#/', '').split('/');
+        return referencePath.reduce((accumulator, current) => accumulator[current], schema);
     }
 
     /**    

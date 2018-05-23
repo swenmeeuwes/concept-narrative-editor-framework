@@ -20,7 +20,7 @@ class ContentTypeFactory {
         if (!contentSchemaUri)
             contentSchemaUri = this._schema.AvailableContentTypeURIs[0];
 
-        const schemaData = SchemaHelper.resolveURI(contentSchemaUri, this._schema.FlatSchema);
+        const schemaData = SchemaHelper.resolveRelativeURI(contentSchemaUri, this._schema.FlatSchema);
         return new ContentModel(schemaData);
     }
 
