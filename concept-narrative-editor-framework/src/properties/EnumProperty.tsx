@@ -11,7 +11,7 @@ interface Props {
 
 interface State {
     items: string[];
-    selected: string;
+    selected?: string;
 }
 
 export default class EnumProperty extends React.Component<Props, State> {
@@ -20,7 +20,7 @@ export default class EnumProperty extends React.Component<Props, State> {
 
         this.state = {
             items: props.items,
-            selected: props.selected || props.items[0] // Error will be thrown when an empty array is passed in
+            selected: props.selected || (props.items.length > 0 ? props.items[0] : undefined)
         };
     }
 
