@@ -10,7 +10,7 @@ interface State {
     text: string;
 }
 
-class StringProperty extends React.Component<Props, State> {
+export default class StringProperty extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
 
@@ -34,5 +34,3 @@ class StringProperty extends React.Component<Props, State> {
         );
     }
 }
-
-export default StringProperty;

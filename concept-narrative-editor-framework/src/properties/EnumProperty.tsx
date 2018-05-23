@@ -14,7 +14,7 @@ interface State {
     selected: string;
 }
 
-class EnumProperty extends React.Component<Props, State> {
+export default class EnumProperty extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
 
@@ -60,5 +60,3 @@ class EnumProperty extends React.Component<Props, State> {
         );
     }
 }
-
-export default EnumProperty;
