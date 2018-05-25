@@ -1,3 +1,5 @@
+import * as React from 'react';
+import { FormEvent } from 'react';
 import Form, { IChangeEvent } from 'react-jsonschema-form';
 
 import TriggerSystemNode from '../TriggerSystemNode';
@@ -5,9 +7,8 @@ import ContentModel from '../../../model/ContentModel';
 import SchemaHelper from '../../../schema/SchemaHelper';
 import TextFormattingUtil from '../../../util/TextFormattingUtil';
 import ContentTypeFactory from '../../../schema/ContentTypeFactory';
-import * as React from 'react';
 import EnumProperty from '../../../properties/EnumProperty';
-import { FormEvent } from 'react';
+import SchemaForm from '../../../schema/form/SchemaForm';
 
 class ContentNode extends TriggerSystemNode {
     private _contentModel: ContentModel;
@@ -50,13 +51,14 @@ class ContentNode extends TriggerSystemNode {
                     onChange={this.onContentTypeChange}
                 />
                 <hr />
-                <Form
+                <SchemaForm schema={schema} />
+                {/* <Form
                     schema={schema}
                     formData={this._contentModel.data}
                     onChange={this.onContentDataValueChanged}
-                >
+                > */}
                     <div /> {/* Removes default rendered 'submit' button */}
-                </Form>
+                {/* </Form> */}
             </div>
         );
     }
