@@ -51,8 +51,8 @@
 								"$ref": "#/definitions/propertyTypes/stringProperty"
 							},
 							{
-								"tooltip": "ID of the video fragment",
-								"description": "ID of the video fragment",
+								"tooltip": "ID of the resource",
+								"description": "ID of the resource",
 								"propertyIndex": 1
 							}
 						]
@@ -301,10 +301,17 @@
 				{
 					"title": "Image content",
 					"$id": "#/contentTypes/imageContent",
-					"stringValue": "Image: [image.resourceID]",
+					"stringValue": "Image: [image.resourceID]",					
 					"properties": {
 						"image": {
-							"$ref": "#/definitions/propertyTypes/resourceProperty"
+							"allOf": [								
+								{
+									"$ref": "#/definitions/propertyTypes/stringProperty"
+								},
+								{
+									"assetType": "image"
+								}
+							]
 						}
 					}
 				}
