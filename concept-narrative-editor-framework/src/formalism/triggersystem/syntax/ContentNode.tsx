@@ -1,3 +1,5 @@
+import * as React from 'react';
+import { FormEvent } from 'react';
 import Form, { IChangeEvent } from 'react-jsonschema-form';
 
 import TriggerSystemNode from '../TriggerSystemNode';
@@ -5,9 +7,8 @@ import ContentModel from '../../../model/ContentModel';
 import SchemaHelper from '../../../schema/SchemaHelper';
 import TextFormattingUtil from '../../../util/TextFormattingUtil';
 import ContentTypeFactory from '../../../schema/ContentTypeFactory';
-import * as React from 'react';
 import EnumProperty from '../../../properties/EnumProperty';
-import { FormEvent } from 'react';
+import CustomStringField from '../../../properties/CustomStringField';
 
 class ContentNode extends TriggerSystemNode {
     private _contentModel: ContentModel;
@@ -41,6 +42,11 @@ class ContentNode extends TriggerSystemNode {
     public render() {
         const contentType = SchemaHelper.trimRefPath(this._contentModel.schemaId);
         const schema = this._contentModel.schema as any;
+
+        const widgets = {
+            BaseInput: CustomStringField
+        };
+
         return (
             <div>
                 <h4>Type</h4>
@@ -52,6 +58,7 @@ class ContentNode extends TriggerSystemNode {
                 <hr />
                 <Form
                     schema={schema}
+                    widgets={widgets}
                     formData={this._contentModel.data}
                     onChange={this.onContentDataValueChanged}
                 >
