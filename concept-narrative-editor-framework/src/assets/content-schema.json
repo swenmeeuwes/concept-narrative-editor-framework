@@ -1,74 +1,137 @@
 {
-    "$schema": "http://json-schema.org/draft-07/schema#",
-    "$id": "http://www.ranjnet.nl/ozcontent#",
-    "title": "&ranj game content",
-    "description": "This schema defines the content types within the game content",
-    "definitions": {
-        "propertyTypes": {
-            "stringProperty": {
-                "$id": "#/definitions/propertyTypes/stringProperty",
-                "type": "string"
-            },
-            "resourceProperty": {
-                "$id": "#/definitions/propertyTypes/resourceProperty",
-                "type": "string",
-                "format": "data-url"
-            },
-            "variableMutationProperty": {
-                "$id": "#/definitions/propertyTypes/variableMutationProperty",
-                "type": "object",
-                "properties": {
-                    "variableKey": {
-                        "$ref": "#/definitions/propertyTypes/stringProperty"
-                    },
-                    "mutationType": {
-                        "$ref": "#/definitions/propertyTypes/stringProperty",
-                        "enum": [
-                            "Set",
-                            "Add",
-                            "Subtract",
-                            "Multiple",
-                            "Divide"
-                        ],
-                        "default": "Set"
-                    },
-                    "mutationValue": {
-                        "$ref": "#/definitions/propertyTypes/stringProperty"
-                    }
-                }
-            }
-        },
-        "contentTypes": {
-            "textContent": {
-                "$id": "#/definitions/contentTypes/textContent",
-                "type": "object",
-                "properties": {
-                    "text": {
-                        "$ref": "#/definitions/propertyTypes/stringProperty"
-                    }
-                }
-            },
-            "imageContent": {
-                "$id": "#/definitions/contentTypes/imageContent",
-                "type": "object",
-                "properties": {
-                    "imageResource": {
-                        "$ref": "#/definitions/propertyTypes/resourceProperty"
-                    }
-                }
-            },
-            "variableMutationContent": {
-                "$id": "#/definitions/contentTypes/variableMutationContent",
-                "type": "object",
-                "properties": {
-                    "mutations": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/definitions/propertyTypes/variableMutationProperty"
-                        }
-                    }
-                }
-            }
-        }
-    }
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "http://www.ranjnet.nl/ozcontent#",
+	"title": "&ranj game content",
+	"description": "This schema defines the content types within the game content",
+	"definitions": {
+		"propertyTypes": {
+			"stringProperty": {
+				"$id": "#/definitions/propertyTypes/stringProperty",
+				"type": "string",
+				"default": ""
+			},
+			"booleanProperty": {
+				"$id": "#/definitions/propertyTypes/booleanProperty",
+				"type": "boolean",
+				"default": false
+			},
+			"resourceProperty": {
+				"$id": "#/definitions/propertyTypes/resourceProperty",
+				"type": "string"
+			},
+			"variableMutationProperty": {
+				"$id": "#/definitions/propertyTypes/variableMutationProperty",
+				"type": "object",
+				"properties": {
+					"variableKey": {
+						"$ref": "#/definitions/propertyTypes/stringProperty"
+					},
+					"mutationType": {
+						"$ref": "#/definitions/propertyTypes/stringProperty",
+						"enum": [
+							"Set",
+							"Add",
+							"Subtract",
+							"Multiple",
+							"Divide"
+						],
+						"default": "Set"
+					},
+					"mutationValue": {
+						"$ref": "#/definitions/propertyTypes/stringProperty"
+					}
+				}
+			}
+		},
+		"baseContent": {
+			"type": "object",
+			"properties": {
+				"type": {
+					"$ref": "#/definitions/propertyTypes/stringProperty"
+				},
+				"label": {
+					"$ref": "#/definitions/propertyTypes/stringProperty",
+					"title": "Label"
+				},
+				"retained": {
+					"$ref": "#/definitions/propertyTypes/booleanProperty",
+					"title": "Retained"
+				},
+				"contentID": {
+					"$ref": "#/definitions/propertyTypes/stringProperty",
+					"title": "Content ID"
+				}
+			},
+			"required": [
+				"type",
+				"label",
+				"retained",
+				"contentID"
+			]
+		}
+	},
+	"contentTypes": {
+		"textContent": {
+			"allOf": [{
+					"$ref": "#/definitions/baseContent"
+				},
+				{
+					"$id": "#/contentTypes/textContent",
+					"title": "Text content",
+					"description": "Textual content",
+					"properties": {
+						"text": {
+							"allOf": [{
+									"$ref": "#/definitions/propertyTypes/stringProperty"
+								},
+								{
+									"title": "Text",
+									"description": "Value of the textual content"
+								}
+							]
+						}
+					}
+				}
+			]
+		},
+		"imageContent": {
+			"allOf": [{
+					"$ref": "#/definitions/baseContent"
+				},
+				{
+					"$id": "#/contentTypes/imageContent",
+					"title": "Image content",
+					"properties": {
+						"imageResource": {
+							"allOf": [{
+									"$ref": "#/definitions/propertyTypes/resourceProperty"
+								},
+								{
+									"assetType": "image"
+								}
+							]
+						}
+					}
+				}
+			]
+		},
+		"variableMutationContent": {
+			"allOf": [{
+					"$ref": "#/definitions/baseContent"
+				},
+				{
+					"title": "Mutate variable content",
+					"$id": "#/contentTypes/variableMutationContent",
+					"properties": {
+						"mutations": {
+							"type": "array",
+							"items": {
+								"$ref": "#/definitions/propertyTypes/variableMutationProperty"
+							}
+						}
+					}
+				}
+			]
+		}
+	}
 }
