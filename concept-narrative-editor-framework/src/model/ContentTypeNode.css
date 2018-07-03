@@ -21,6 +21,13 @@
     font-size: 12px;
 }
 
+.joint-port-label {
+    /* font-size: 12px;
+    width: 100px;
+    height: 32px; */
+    text-align: left;
+}
+
 /* Connection styling */
 .connection {
     stroke: rgb(78, 93, 108);
