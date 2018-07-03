@@ -7,7 +7,11 @@ export const TriggerSystemPortGroups = {
             name: 'left', // layout name
             args: {}, // arguments for port layout function, properties depends on type of layout
         },
-        label: {},
+        label: {
+            position: {
+                name: 'left', args: { y: -5 }
+            }
+        },
         attrs: {
             '.port-body': {
                 magnet: true
@@ -33,7 +37,11 @@ export const TriggerSystemPortGroups = {
             name: 'right', // layout name
             args: {}, // arguments for port layout function, properties depends on type of layout
         },
-        label: {},
+        label: {
+            position: {
+                name: 'right', args: { y: 5 }
+            }
+        },
         attrs: {
             '.port-body': {
                 magnet: true
@@ -60,56 +68,65 @@ export const TriggerSystemPortGroups = {
 export const UnlockPort = {
     label: 'unlock',
     type: 'unlock',
-    group: 'in'
+    group: 'in',
+    attrs: { 'text': { text: 'unlock' } }
 };
 
 export const AvailableConditionPort = {
     label: 'available',
     type: 'available',
-    group: 'in'
+    group: 'in',
+    attrs: { 'text': { text: 'make available' } }
 };
 
 export const UnlockedPort = {
     label: 'unlocked',
     type: 'unlocked',
-    group: 'out'
+    group: 'out',
+    attrs: { 'text': { text: 'unlocked' } }
 };
 
 export const AvailablePort = {
     label: 'available',
     type: 'available',
-    group: 'out'
+    group: 'out',
+    attrs: { 'text': { text: 'available' } }
 };
 
 export const CompletedPort = {
     label: 'completed',
     type: 'completed',
-    group: 'out'
+    group: 'out',
+    attrs: { 'text': { text: 'completed' } }
 };
 
 export const LogicalInPort = {
     label: 'logical in',
     type: 'logical in',
     group: 'in',
-    validateConnection: (against: SVGElement | joint.dia.CellView) => {
-        return true;
-    }
+    attrs: { 'text': { text: '' } }
+    // validateConnection: (against: SVGElement | joint.dia.CellView) => {
+    //     return true;
+    // }
 };
 
 export const LogicalOutPort = {
     label: 'logical out',
     type: 'logical out',
-    group: 'out'
+    group: 'out',
+    attrs: { 'text': { text: '' } }
 };
 
 export const DelayInPort = {
     label: 'delay in',
     type: 'delay in',
-    group: 'in'
+    group: 'in',
+    attrs: { 'text': { text: '' } }
 };
 
 export const DelayOutPort = {
     label: 'delay out',
     type: 'delay out',
-    group: 'out'
+    group: 'out',
+    attrs: { 'text': { text: '' } }
 };
